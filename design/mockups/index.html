@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f1e2e">
+<title>DeskTrace Mockups</title>
+<link rel="stylesheet" href="../design-system/desktrace.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="mk-page">
+
+<header class="mk-masthead">
+  <div>
+    <h1>DeskTrace Mockups</h1>
+    <p>High fidelity · design system v2 · CSM 399 Capstone, Group 16</p>
+  </div>
+  <div class="mk-masthead__spacer">
+    <button class="ds-btn ds-btn--secondary" id="themeToggle" aria-pressed="false">Dark mode</button>
+  </div>
+</header>
+
+<section class="ds-card">
+  <h2 style="margin-top:0">What these are</h2>
+  <p class="ds-muted" style="max-width:68ch">The ten wireframe screens, rebuilt in the real design system. Every element
+  inside a device frame is a <code>ds-</code> class from <code>desktrace.css</code> — nothing is drawn specially for
+  this page. That makes these mockups a working test of the system: four components were missing when I started
+  (data table, photo slots, chart rows, hero figure) and were added to the system rather than faked here.</p>
+  <p class="ds-muted" style="max-width:68ch">The wireframes carry the reasoning for <em>why</em> each screen is laid out
+  this way. These show the result. Screen numbers match, so S06 here is S06 there.</p>
+  <div class="mk-flow">
+    <span class="ds-chip ds-chip--accent">S01 Role</span>
+    <span class="ds-chip ds-chip--accent">S02 Report</span>
+    <span class="ds-chip ds-chip--accent">S03 My tickets</span>
+    <span class="ds-chip ds-chip--accent">S04 Detail</span>
+    <span class="ds-chip ds-chip--accent">S05 Queue</span>
+    <span class="ds-chip ds-chip--accent">S06 Working</span>
+    <span class="ds-chip ds-chip--accent">S07 Dashboard</span>
+    <span class="ds-chip ds-chip--accent">S08 Admin</span>
+    <span class="ds-chip ds-chip--accent">S09 Assets</span>
+    <span class="ds-chip ds-chip--accent">S10 Alerts</span>
+  </div>
+</section>
+
+<!-- ===================== S01 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S01</div>
+    <h2 class="mk-section__title">Role selection</h2>
+    <div class="mk-section__who">All actors · entry point</div>
+  </div>
+  <div class="mk-split">
+    <div class="mk-phone">
+      <div class="mk-phone__status"><span>09:41</span><span>5G ▮▮▮</span></div>
+      <header class="ds-appbar"><div class="ds-container ds-appbar__inner"><h1 class="ds-appbar__title">DeskTrace</h1></div></header>
+      <div class="mk-phone__screen">
+        <main class="ds-container ds-main">
+          <h2 style="margin-top:0">Who are you signing in as?</h2>
+          <p class="ds-muted">Demo mode — no password required.</p>
+          <div class="ds-stack">
+            <article class="ds-card ds-card--interactive ds-row ds-row--between" style="cursor:pointer">
+              <div><b>Requester</b><div class="ds-card__meta">Report faults, follow your tickets</div></div>
+              <span class="ds-muted">›</span>
+            </article>
+            <article class="ds-card ds-card--interactive ds-row ds-row--between" style="cursor:pointer">
+              <div><b>Technician</b><div class="ds-card__meta">Work your assigned queue</div></div>
+              <span class="ds-muted">›</span>
+            </article>
+            <article class="ds-card ds-card--interactive ds-row ds-row--between" style="cursor:pointer">
+              <div><b>IT manager</b><div class="ds-card__meta">Reassign, set targets, read the dashboard</div></div>
+              <span class="ds-muted">›</span>
+            </article>
+            <article class="ds-card ds-card--interactive ds-row ds-row--between" style="cursor:pointer">
+              <div><b>Asset officer</b><div class="ds-card__meta">Maintain the device register</div></div>
+              <span class="ds-muted">›</span>
+            </article>
+          </div>
+          <div class="ds-notice ds-notice--info"><div>This demo stores data in your browser. Do not enter passwords or personal information.</div></div>
+        </main>
+      </div>
+    </div>
+    <ul class="mk-notes">
+      <li><b>Cards, not a dropdown.</b> Four large targets, each describing what the role can do — the actor model teaches itself during the demo.</li>
+      <li><b>Hover lifts the card.</b> <code>ds-card--interactive</code> raises it 2px on a shadow change, so a tappable card is distinguishable from a static one before you touch it.</li>
+      <li><b>The privacy note is on the entry screen</b>, before anyone types anything.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== S02 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S02</div>
+    <h2 class="mk-section__title">Report a fault</h2>
+    <div class="mk-section__who">Requester · arrived by QR scan · offline</div>
+  </div>
+  <div class="mk-split">
+    <div class="mk-phone">
+      <div class="mk-phone__status"><span>09:41</span><span>✈ offline</span></div>
+      <header class="ds-appbar"><div class="ds-container ds-appbar__inner">
+        <h1 class="ds-appbar__title">Report a fault</h1>
+        <span class="ds-chip" style="background:rgba(255,255,255,.15);color:#fff">Offline</span>
+      </div></header>
+      <div class="mk-phone__screen">
+        <main class="ds-container ds-main">
+          <div class="ds-card ds-row ds-row--between" style="padding:var(--ds-space-3)">
+            <div><b>AST-001</b> · Projector<div class="ds-card__meta">Lecture Hall 1 · scanned</div></div>
+            <button class="ds-btn ds-btn--ghost ds-btn--sm">Change</button>
+          </div>
+
+          <label class="ds-label" for="m-cat">Category</label>
+          <select class="ds-select" id="m-cat"><option>Projector</option><option>Network</option><option>Printer</option></select>
+
+          <label class="ds-label" for="m-loc">Location</label>
+          <select class="ds-select" id="m-loc"><option>Lecture Hall 1</option><option>Admin Block</option></select>
+
+          <span class="ds-label" id="m-urg">How urgent?</span>
+          <div class="ds-seg" role="group" aria-labelledby="m-urg">
+            <button class="ds-seg__option is-selected" aria-pressed="true">Critical<small>15 min</small></button>
+            <button class="ds-seg__option" aria-pressed="false">High<small>1 hr</small></button>
+            <button class="ds-seg__option" aria-pressed="false">Medium<small>4 hrs</small></button>
+            <button class="ds-seg__option" aria-pressed="false">Low<small>1 day</small></button>
+          </div>
+
+          <label class="ds-label" for="m-desc">What is wrong?</label>
+          <textarea class="ds-textarea" id="m-desc" rows="3">No signal from the projector. Class starts in 10 minutes.</textarea>
+
+          <span class="ds-label">Photos (optional, up to 3)</span>
+          <div class="ds-upload">
+            <div class="ds-upload__slot ds-upload__slot--filled" style="background-image:linear-gradient(135deg,#334155,#64748b)"></div>
+            <div class="ds-upload__slot">+ add</div>
+            <div class="ds-upload__slot">+ add</div>
+          </div>
+
+          <div class="ds-notice ds-notice--warn"><div>There is already an open ticket <b>TKT-1001</b> for this device. Send only if this is a different fault.</div></div>
+        </main>
+        <div class="ds-sticky-actions">
+          <button class="ds-btn ds-btn--block">Send ticket</button>
+          <p class="ds-help" style="text-align:center;margin:var(--ds-space-2) 0 0">Saved on this phone — sends when you are back online</p>
+        </div>
+      </div>
+    </div>
+    <ul class="mk-notes">
+      <li><b>Urgency shows what it commits to.</b> Each segment carries its response target, so choosing Critical visibly means claiming a 15-minute response. It is the cheapest brake there is on urgency inflation.</li>
+      <li><b>Three fixed photo slots.</b> The limit is expressed by the layout, not by an error message after the fact.</li>
+      <li><b>The sticky bar is translucent with a blur</b>, so content scrolling under it stays legible while Send never leaves thumb reach.</li>
+      <li><b>The offline consequence is in plain words.</b> "Pending sync" means nothing to a lecturer; "sends when you are back online" does.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== S03 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S03</div>
+    <h2 class="mk-section__title">My tickets — the offline states</h2>
+    <div class="mk-section__who">Requester · demo steps 2 and 3</div>
+  </div>
+  <div class="mk-split">
+    <div class="mk-phone">
+      <div class="mk-phone__status"><span>09:43</span><span>✈ offline</span></div>
+      <header class="ds-appbar"><div class="ds-container ds-appbar__inner">
+        <h1 class="ds-appbar__title">My tickets</h1>
+        <span class="ds-sla ds-sla--pending">1 pending</span>
+      </div></header>
+      <div class="mk-phone__screen">
+        <main class="ds-container ds-main">
+          <nav class="ds-tabs" aria-label="Sections">
+            <button class="ds-tab" aria-current="page">Tickets</button>
+            <button class="ds-tab">Devices</button>
+            <button class="ds-tab">Alerts</button>
+          </nav>
+
+          <div class="ds-notice ds-notice--info"><div>You are offline. 1 change is saved on this phone and will send automatically.</div></div>
+
+          <div class="ds-stack">
+            <article class="ds-card ds-ticket ds-ticket--pending">
+              <div class="ds-row ds-row--between">
+                <b class="ds-card__title" style="font-size:var(--ds-text-base);color:var(--ds-ink-2)">Not sent yet</b>
+                <span class="ds-sla ds-sla--pending">Pending</span>
+              </div>
+              <p style="margin:var(--ds-space-2) 0 0">No signal from the projector</p>
+              <div class="ds-card__meta">Lecture Hall 1 · AST-001 · just now</div>
+            </article>
+
+            <article class="ds-card ds-ticket ds-ticket--at-risk">
+              <div class="ds-row">
+                <b class="ds-card__title">TKT-1002</b>
+                <span class="ds-chip">Assigned</span>
+                <span class="ds-priority ds-priority--high"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">High</span></span>
+              </div>
+              <p style="margin:var(--ds-space-2) 0 0">Shared printer jams on every page</p>
+              <div class="ds-card__meta">Library · AST-003 · Ama is assigned</div>
+              <div class="ds-row" style="margin-top:var(--ds-space-3)"><span class="ds-sla ds-sla--at-risk">Due soon · 12m left</span></div>
+              <div class="ds-bar ds-bar--at-risk"><i style="width:81%"></i></div>
+            </article>
+
+            <article class="ds-card ds-ticket ds-ticket--ok">
+              <div class="ds-row">
+                <b class="ds-card__title">TKT-1005</b>
+                <span class="ds-chip">Resolved</span>
+                <span class="ds-priority ds-priority--medium"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">Medium</span></span>
+              </div>
+              <p style="margin:var(--ds-space-2) 0 0">Image flickers</p>
+              <div class="ds-actions" style="margin-top:var(--ds-space-3)">
+                <button class="ds-btn">Confirm fixed</button>
+                <button class="ds-btn ds-btn--secondary">Not fixed — reopen</button>
+              </div>
+            </article>
+          </div>
+        </main>
+      </div>
+    </div>
+    <ul class="mk-notes">
+      <li><b>The unsent ticket is dashed, flat and has no reference number</b> — because it does not have one yet. Showing a fake reference that later changes would undermine the audit trail.</li>
+      <li><b>Dashed versus solid is the whole sync story</b>, told without a word. This is the screenshot for demo step 3.</li>
+      <li><b>The at-risk card tints its whole meter track</b>, not just the filled part, so the state reads even when little time has elapsed.</li>
+      <li><b>Confirm and reopen live on the list card.</b> Closing the loop is the step most likely to be skipped, so it costs one tap.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== S04 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S04</div>
+    <h2 class="mk-section__title">Ticket detail and history</h2>
+    <div class="mk-section__who">Requester · the trust-building screen</div>
+  </div>
+  <div class="mk-split">
+    <div class="mk-phone">
+      <div class="mk-phone__status"><span>11:02</span><span>5G ▮▮▮</span></div>
+      <header class="ds-appbar"><div class="ds-container ds-appbar__inner">
+        <h1 class="ds-appbar__title">TKT-1001</h1>
+        <span class="ds-sla ds-sla--ok">Up to date</span>
+      </div></header>
+      <div class="mk-phone__screen">
+        <main class="ds-container ds-main">
+          <div class="ds-row">
+            <span class="ds-chip">In Progress</span>
+            <span class="ds-priority ds-priority--critical"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">Critical</span></span>
+          </div>
+          <p style="margin-top:var(--ds-space-3)">No signal from the projector. Class starts in 10 minutes.</p>
+          <div class="ds-card__meta">Lecture Hall 1 · AST-001 · reported 09:43</div>
+
+          <div class="ds-card" style="margin-top:var(--ds-space-4)">
+            <span class="ds-sla ds-sla--breached">Breached · 2h over target</span>
+            <div class="ds-bar ds-bar--breached"><i style="width:100%"></i></div>
+            <p class="ds-help">Responded in 4 min · resolution target was 4 hrs</p>
+          </div>
+
+          <h3 style="margin-top:var(--ds-space-6)">What has happened</h3>
+          <ol class="ds-timeline">
+            <li class="ds-timeline__item ds-timeline__item--current">
+              <div class="ds-timestamp">11:02 · Kofi</div>
+              <div>Replaced the HDMI cable, testing now</div>
+            </li>
+            <li class="ds-timeline__item">
+              <div class="ds-timestamp">09:47 · Kofi</div>
+              <div>Acknowledged — on my way to the hall</div>
+            </li>
+            <li class="ds-timeline__item">
+              <div class="ds-timestamp">09:45 · System</div>
+              <div>Assigned to Kofi (skill, zone, workload)</div>
+            </li>
+            <li class="ds-timeline__item">
+              <div class="ds-timestamp">09:43 · Dr. Mensah</div>
+              <div>Ticket reported</div>
+            </li>
+          </ol>
+
+          <label class="ds-label" for="m-comment">Add a comment</label>
+          <textarea class="ds-textarea" id="m-comment" rows="2" placeholder="Anything else the technician should know?"></textarea>
+          <button class="ds-btn ds-btn--secondary ds-btn--block" style="margin-top:var(--ds-space-3)">Add comment</button>
+        </main>
+      </div>
+    </div>
+    <ul class="mk-notes">
+      <li><b>The SLA block states the promise and the outcome in words.</b> A requester does not know what "81%" means; "2h over target" they understand at once.</li>
+      <li><b>The timeline is the point of the screen.</b> A real connector with a dot per event, the current one in the accent — it names who did what, including the system's own assignment decision and its reason.</li>
+      <li><b>Comment sits after the history.</b> Reading before writing: the requester sees the technician already responded before they chase it.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== S05 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S05</div>
+    <h2 class="mk-section__title">Technician queue</h2>
+    <div class="mk-section__who">Technician · grouped by deadline</div>
+  </div>
+  <div class="mk-split">
+    <div class="mk-phone">
+      <div class="mk-phone__status"><span>09:46</span><span>5G ▮▮▮</span></div>
+      <header class="ds-appbar"><div class="ds-container ds-appbar__inner">
+        <h1 class="ds-appbar__title">Kofi's queue</h1>
+        <span class="ds-chip" style="background:rgba(255,255,255,.15);color:#fff">4 open</span>
+      </div></header>
+      <div class="mk-phone__screen">
+        <main class="ds-container ds-main">
+          <nav class="ds-tabs" aria-label="Queue filter">
+            <button class="ds-tab" aria-current="page">Open (4)</button>
+            <button class="ds-tab">Waiting (1)</button>
+            <button class="ds-tab">Done</button>
+          </nav>
+
+          <h3 style="margin-top:var(--ds-space-5)">Overdue · 1</h3>
+          <article class="ds-card ds-ticket ds-ticket--breached ds-card--interactive">
+            <div class="ds-row ds-row--between">
+              <div class="ds-row">
+                <b class="ds-card__title">TKT-1001</b>
+                <span class="ds-priority ds-priority--critical"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span></span>
+              </div>
+              <span class="ds-sla ds-sla--breached">2h over</span>
+            </div>
+            <p style="margin:var(--ds-space-2) 0 0">Projector — no signal</p>
+            <div class="ds-card__meta">Lecture Hall 1 · AST-001</div>
+          </article>
+
+          <h3 style="margin-top:var(--ds-space-6)">Due today · 2</h3>
+          <div class="ds-stack">
+            <article class="ds-card ds-ticket ds-ticket--at-risk ds-card--interactive">
+              <div class="ds-row ds-row--between">
+                <div class="ds-row">
+                  <b class="ds-card__title">TKT-1008</b>
+                  <span class="ds-priority ds-priority--high"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span></span>
+                </div>
+                <span class="ds-sla ds-sla--at-risk">48m left</span>
+              </div>
+              <p style="margin:var(--ds-space-2) 0 0">Account locked out</p>
+              <div class="ds-card__meta">Admin Block</div>
+            </article>
+            <article class="ds-card ds-ticket ds-ticket--ok ds-card--interactive">
+              <div class="ds-row ds-row--between">
+                <div class="ds-row">
+                  <b class="ds-card__title">TKT-1011</b>
+                  <span class="ds-priority ds-priority--medium"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span></span>
+                </div>
+                <span class="ds-sla ds-sla--ok">3h left</span>
+              </div>
+              <p style="margin:var(--ds-space-2) 0 0">Projector remote not working</p>
+              <div class="ds-card__meta">Lecture Hall 1 · AST-001</div>
+            </article>
+          </div>
+        </main>
+        <div class="ds-sticky-actions">
+          <button class="ds-btn ds-btn--block">⬚&nbsp; Scan a device label</button>
+        </div>
+      </div>
+    </div>
+    <ul class="mk-notes">
+      <li><b>Grouped by deadline, not merely sorted by it.</b> A sorted list still has to be read top to bottom to find where "late" ends; headed groups show the situation at a glance from across a corridor.</li>
+      <li><b>The countdown is the right-hand anchor on every row</b>, so the eye scans one column of times instead of hunting.</li>
+      <li><b>Priority drops its text label here.</b> In the technician's own queue the meter alone carries it — the deadline is what decides the next job, and the full label returns wherever there is room.</li>
+      <li><b>Scan is permanently sticky.</b> A technician arriving at a device scans before anything else.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== S06 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S06</div>
+    <h2 class="mk-section__title">Working a ticket</h2>
+    <div class="mk-section__who">Technician · where the asset register pays for itself</div>
+  </div>
+  <div class="mk-split">
+    <div class="mk-phone">
+      <div class="mk-phone__status"><span>09:50</span><span>5G ▮▮▮</span></div>
+      <header class="ds-appbar"><div class="ds-container ds-appbar__inner">
+        <h1 class="ds-appbar__title">TKT-1001</h1>
+        <span class="ds-sla ds-sla--breached">2h over</span>
+      </div></header>
+      <div class="mk-phone__screen">
+        <main class="ds-container ds-main">
+          <article class="ds-card" style="background:var(--ds-surface-2)">
+            <div class="ds-row ds-row--between">
+              <b>AST-001 · Epson EB-X49</b>
+              <span class="ds-chip">In repair</span>
+            </div>
+            <div class="ds-card__meta">Lecture Hall 1 · warranty ends 03/2027</div>
+            <p style="margin:var(--ds-space-3) 0 0"><b>Failed 2 times this term</b></p>
+            <div class="ds-list">
+              <div class="ds-list__item">
+                <div class="ds-timestamp">18 Oct</div>
+                <div>Lamp error on startup — <i>replaced lamp module</i></div>
+              </div>
+              <div class="ds-list__item">
+                <div class="ds-timestamp">02 Oct</div>
+                <div>Image flickers — <i>reseated HDMI</i></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="ds-card" style="margin-top:var(--ds-space-4)">
+            <p style="margin:0">No signal from the projector. Class starts in 10 minutes.</p>
+            <div class="ds-card__meta">Dr. Mensah · 09:43</div>
+            <div class="ds-upload" style="margin-top:var(--ds-space-3)">
+              <div class="ds-upload__slot ds-upload__slot--filled" style="background-image:linear-gradient(135deg,#334155,#64748b)"></div>
+            </div>
+          </article>
+
+          <label class="ds-label" for="m-note">What did you check or change?</label>
+          <textarea class="ds-textarea" id="m-note" rows="2">Replaced HDMI cable, testing now</textarea>
+
+          <label class="ds-label" for="m-part">Part used (optional)</label>
+          <input class="ds-input" id="m-part" value="HDMI cable 3m">
+        </main>
+        <div class="ds-sticky-actions">
+          <div class="ds-row" style="flex-wrap:nowrap;gap:var(--ds-space-2)">
+            <button class="ds-btn ds-btn--secondary" style="flex:1">Pause ⏸</button>
+            <button class="ds-btn" style="flex:2">Mark resolved</button>
+          </div>
+          <p class="ds-help" style="text-align:center;margin:var(--ds-space-2) 0 0">Pausing stops the resolution clock</p>
+        </div>
+      </div>
+    </div>
+    <ul class="mk-notes">
+      <li><b>Device history sits above the fault report.</b> The most consequential ordering decision in the set. The proposal's own scenario has a technician seeing that the projector failed twice this term — worthless three scrolls down. This is what makes the register useful to a technician rather than only to an auditor.</li>
+      <li><b>History entries carry their resolution</b>, not just the fault, so the next technician can skip a diagnosis.</li>
+      <li><b>"What did you check or change?" not "Notes".</b> A box labelled Notes produces "fixed". Next term's repair history is decided by the wording of this one label.</li>
+      <li><b>Two actions, weighted 2:1.</b> Resolve is the common case. Pause states its consequence, because the technician is stopping a measured commitment.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== S07 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S07</div>
+    <h2 class="mk-section__title">Manager dashboard</h2>
+    <div class="mk-section__who">IT manager · desktop · demo step 6</div>
+  </div>
+  <div class="mk-desktop">
+    <div class="mk-desktop__chrome">
+      <i class="mk-desktop__dot"></i><i class="mk-desktop__dot"></i><i class="mk-desktop__dot"></i>
+      <span class="mk-desktop__url">desktrace.app/dashboard</span>
+    </div>
+    <header class="ds-appbar"><div class="ds-container ds-appbar__inner">
+      <h1 class="ds-appbar__title">DeskTrace</h1>
+      <span class="ds-chip" style="background:rgba(255,255,255,.15);color:#fff">IT Manager</span>
+      <span class="ds-sla ds-sla--ok">Up to date</span>
+    </div></header>
+    <main class="ds-container ds-main">
+      <nav class="ds-tabs" aria-label="Main">
+        <button class="ds-tab" aria-current="page">Dashboard</button>
+        <button class="ds-tab">Tickets</button>
+        <button class="ds-tab">Devices</button>
+        <button class="ds-tab">Licences</button>
+        <button class="ds-tab">Alerts</button>
+      </nav>
+
+      <div class="ds-grid ds-grid--wide" style="margin-top:var(--ds-space-5)">
+        <div class="ds-card ds-hero">
+          <div class="ds-kpi__label">SLA compliance · this month</div>
+          <div class="ds-hero__value">94%</div>
+          <div class="ds-kpi__delta ds-kpi__delta--good">Up <b>+6 points</b> vs last month</div>
+        </div>
+        <div class="ds-grid" style="grid-template-columns:repeat(2,1fr);gap:var(--ds-space-4)">
+          <div class="ds-card"><div class="ds-kpi__label">Open tickets</div><div class="ds-kpi__value">7</div><div class="ds-kpi__delta">Steady vs last week</div></div>
+          <div class="ds-card"><div class="ds-kpi__label">At risk</div><div class="ds-kpi__value">3</div><div class="ds-kpi__delta ds-kpi__delta--bad">Up <b>+2</b> vs last week</div></div>
+          <div class="ds-card"><div class="ds-kpi__label">Average first response</div><div class="ds-kpi__value ds-kpi__value--duration">12m</div><div class="ds-kpi__delta ds-kpi__delta--good">Down <b>3m</b> vs last month</div></div>
+          <div class="ds-card"><div class="ds-kpi__label">Average resolution</div><div class="ds-kpi__value ds-kpi__value--duration">3h 20m</div><div class="ds-kpi__delta">Steady vs last month</div></div>
+        </div>
+      </div>
+
+      <div class="ds-grid" style="margin-top:var(--ds-space-5)">
+        <div class="ds-card">
+          <figure class="ds-chart">
+            <figcaption class="ds-chart__title">Tickets by status</figcaption>
+            <div class="ds-chart__rows">
+              <div class="ds-chart__row"><span class="ds-chart__name">New</span><div class="ds-chart__track"><i style="width:25%"></i></div><span class="ds-chart__value">1</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Assigned</span><div class="ds-chart__track"><i style="width:75%"></i></div><span class="ds-chart__value">3</span></div>
+              <div class="ds-chart__row ds-chart__row--lead"><span class="ds-chart__name">In Progress</span><div class="ds-chart__track"><i style="width:100%"></i></div><span class="ds-chart__value">4</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Waiting</span><div class="ds-chart__track"><i style="width:25%"></i></div><span class="ds-chart__value">1</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Resolved</span><div class="ds-chart__track"><i style="width:50%"></i></div><span class="ds-chart__value">2</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Closed</span><div class="ds-chart__track"><i style="width:50%"></i></div><span class="ds-chart__value">2</span></div>
+            </div>
+          </figure>
+        </div>
+
+        <div class="ds-card">
+          <figure class="ds-chart">
+            <figcaption class="ds-chart__title">Tickets by priority</figcaption>
+            <div class="ds-chart__rows">
+              <div class="ds-chart__row ds-chart__row--lead"><span class="ds-chart__name">Critical</span><div class="ds-chart__track"><i style="width:100%"></i></div><span class="ds-chart__value">4</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">High</span><div class="ds-chart__track"><i style="width:75%"></i></div><span class="ds-chart__value">3</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Medium</span><div class="ds-chart__track"><i style="width:50%"></i></div><span class="ds-chart__value">2</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Low</span><div class="ds-chart__track"><i style="width:25%"></i></div><span class="ds-chart__value">1</span></div>
+            </div>
+          </figure>
+        </div>
+
+        <div class="ds-card">
+          <figure class="ds-chart">
+            <figcaption class="ds-chart__title">Open work per technician</figcaption>
+            <div class="ds-chart__rows">
+              <div class="ds-chart__row ds-chart__row--lead"><span class="ds-chart__name">Kofi</span><div class="ds-chart__track"><i style="width:100%"></i></div><span class="ds-chart__value">4</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Ama</span><div class="ds-chart__track"><i style="width:50%"></i></div><span class="ds-chart__value">2</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Yaw</span><div class="ds-chart__track"><i style="width:25%"></i></div><span class="ds-chart__value">1</span></div>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <div class="ds-grid ds-grid--wide" style="margin-top:var(--ds-space-5)">
+        <div class="ds-card">
+          <figure class="ds-chart">
+            <figcaption class="ds-chart__title">Repeat faults by device</figcaption>
+            <div class="ds-chart__rows">
+              <div class="ds-chart__row ds-chart__row--lead"><span class="ds-chart__name">AST-001 Projector</span><div class="ds-chart__track"><i style="width:100%"></i></div><span class="ds-chart__value">3</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">AST-003 Printer</span><div class="ds-chart__track"><i style="width:66%"></i></div><span class="ds-chart__value">2</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">AST-004 Router</span><div class="ds-chart__track"><i style="width:33%"></i></div><span class="ds-chart__value">1</span></div>
+            </div>
+          </figure>
+          <p class="ds-help">Three faults on one projector in a term is the argument for replacing it.</p>
+        </div>
+        <div class="ds-card">
+          <figure class="ds-chart">
+            <figcaption class="ds-chart__title">Repeat faults by room</figcaption>
+            <div class="ds-chart__rows">
+              <div class="ds-chart__row ds-chart__row--lead"><span class="ds-chart__name">Lecture Hall 1</span><div class="ds-chart__track"><i style="width:100%"></i></div><span class="ds-chart__value">4</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Library</span><div class="ds-chart__track"><i style="width:50%"></i></div><span class="ds-chart__value">2</span></div>
+              <div class="ds-chart__row"><span class="ds-chart__name">Admin Block</span><div class="ds-chart__track"><i style="width:25%"></i></div><span class="ds-chart__value">1</span></div>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <h2>Needs you now</h2>
+      <div class="ds-stack">
+        <article class="ds-card ds-ticket ds-ticket--breached">
+          <div class="ds-row ds-row--between">
+            <div class="ds-row">
+              <b class="ds-card__title">TKT-1001</b>
+              <span class="ds-chip">Kofi</span>
+              <span>Projector — no signal</span>
+            </div>
+            <div class="ds-row">
+              <span class="ds-sla ds-sla--breached">2h over</span>
+              <button class="ds-btn ds-btn--secondary ds-btn--sm">Reassign</button>
+            </div>
+          </div>
+        </article>
+        <article class="ds-card ds-ticket ds-ticket--at-risk">
+          <div class="ds-row ds-row--between">
+            <div class="ds-row">
+              <b class="ds-card__title">TKT-1002</b>
+              <span class="ds-chip">Ama</span>
+              <span>Printer jams every page</span>
+            </div>
+            <div class="ds-row">
+              <span class="ds-sla ds-sla--at-risk">12m left</span>
+              <button class="ds-btn ds-btn--secondary ds-btn--sm">Reassign</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+  </div>
+  <ul class="mk-notes" style="margin-top:var(--ds-space-5)">
+    <li><b>One hero figure, then stat tiles.</b> A dashboard leads with a single number — SLA compliance is the one the manager is judged on. The wireframe had six equal tiles; six equals means no hierarchy, so the eye reads all six to find the important one.</li>
+    <li><b>Every tile carries a delta against a named period.</b> "3 at risk" is a fact; "up 2 vs last week" is information.</li>
+    <li><b>Horizontal bars, one series, no legend.</b> Category names here are words, not dates, and horizontal bars give a label room to be read instead of rotated. One series means the title already says what is plotted, so a legend box with one swatch would just restate it.</li>
+    <li><b>The series colour is the accent, never the SLA colours.</b> Green, amber and red are reserved for state. If a bar chart used them, "red" would stop meaning "breached".</li>
+    <li><b>Repeat faults keep their exact counts beside the bars.</b> This is the proposal's "Learn" pillar and its stated business outcome — the manager takes these rows to a budget meeting, and a rank you cannot quote is no use there.</li>
+    <li><b>The dashboard ends in actions.</b> A dashboard that only reports leaves the manager hunting in another tab for the thing it just alarmed them about.</li>
+  </ul>
+</section>
+
+<!-- ===================== S08 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S08</div>
+    <h2 class="mk-section__title">Ticket administration</h2>
+    <div class="mk-section__who">IT manager · desktop</div>
+  </div>
+  <div class="mk-desktop">
+    <div class="mk-desktop__chrome">
+      <i class="mk-desktop__dot"></i><i class="mk-desktop__dot"></i><i class="mk-desktop__dot"></i>
+      <span class="mk-desktop__url">desktrace.app/tickets</span>
+    </div>
+    <header class="ds-appbar"><div class="ds-container ds-appbar__inner">
+      <h1 class="ds-appbar__title">DeskTrace</h1>
+      <span class="ds-chip" style="background:rgba(255,255,255,.15);color:#fff">IT Manager</span>
+    </div></header>
+    <main class="ds-container ds-main">
+      <div class="ds-field-grid">
+        <div><label class="ds-label" for="f-q">Search</label><input class="ds-input" id="f-q" placeholder="Reference, description, device…"></div>
+        <div><label class="ds-label" for="f-st">Status</label><select class="ds-select" id="f-st"><option>All statuses</option></select></div>
+        <div><label class="ds-label" for="f-ct">Category</label><select class="ds-select" id="f-ct"><option>All categories</option></select></div>
+        <div><label class="ds-label" for="f-lc">Location</label><select class="ds-select" id="f-lc"><option>All locations</option></select></div>
+        <div><label class="ds-label" for="f-tc">Technician</label><select class="ds-select" id="f-tc"><option>All technicians</option></select></div>
+      </div>
+
+      <div class="ds-card" style="margin-top:var(--ds-space-5);border-color:var(--ds-accent)">
+        <div class="ds-row ds-row--between">
+          <h3 style="margin:0">Manager queue · 1 ticket has no technician</h3>
+          <span class="ds-muted">No one matched its skill, zone and availability</span>
+        </div>
+        <article class="ds-card ds-ticket" style="margin-top:var(--ds-space-3)">
+          <div class="ds-row ds-row--between">
+            <div class="ds-row">
+              <b class="ds-card__title">TKT-1014</b>
+              <span class="ds-priority ds-priority--medium"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">Medium</span></span>
+              <span>Software — Excel will not open</span>
+              <span class="ds-muted">Lecture Hall 1</span>
+            </div>
+            <div class="ds-row">
+              <select class="ds-select" style="width:auto"><option>Assign to…</option><option>Kofi</option><option>Ama</option><option>Yaw</option></select>
+              <button class="ds-btn ds-btn--sm">Assign</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="ds-card ds-table-scroll" style="margin-top:var(--ds-space-5);padding:0">
+        <table class="ds-table">
+          <thead><tr><th>Ref</th><th>Fault</th><th>Priority</th><th>Technician</th><th>SLA</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><b>TKT-1001</b></td>
+              <td>Projector — no signal</td>
+              <td><span class="ds-priority ds-priority--critical"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span></span></td>
+              <td><select class="ds-select ds-btn--sm" style="width:auto;min-height:36px"><option>Kofi</option><option>Ama</option><option>Yaw</option></select></td>
+              <td><span class="ds-sla ds-sla--breached">2h over</span></td>
+              <td>In Progress</td>
+              <td><button class="ds-btn ds-btn--ghost ds-btn--sm">Open</button></td>
+            </tr>
+            <tr>
+              <td><b>TKT-1002</b></td>
+              <td>Printer jams every page</td>
+              <td><span class="ds-priority ds-priority--high"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span></span></td>
+              <td><select class="ds-select ds-btn--sm" style="width:auto;min-height:36px"><option>Ama</option><option>Kofi</option><option>Yaw</option></select></td>
+              <td><span class="ds-sla ds-sla--at-risk">12m left</span></td>
+              <td>Assigned</td>
+              <td><button class="ds-btn ds-btn--ghost ds-btn--sm">Open</button></td>
+            </tr>
+            <tr>
+              <td><b>TKT-1011</b></td>
+              <td>Projector remote not working</td>
+              <td><span class="ds-priority ds-priority--medium"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span></span></td>
+              <td><select class="ds-select ds-btn--sm" style="width:auto;min-height:36px"><option>Kofi</option><option>Ama</option><option>Yaw</option></select></td>
+              <td><span class="ds-sla ds-sla--ok">3h left</span></td>
+              <td>Assigned</td>
+              <td><button class="ds-btn ds-btn--ghost ds-btn--sm">Open</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  <ul class="mk-notes" style="margin-top:var(--ds-space-5)">
+    <li><b>All five filters visible at once.</b> There is room on a manager's screen, and a filter you cannot see is a filter nobody uses.</li>
+    <li><b>The manager queue is a panel above the table, outlined in the accent.</b> It is the one case where the automatic assignment gave up and needs a human, and it states <em>why</em> nobody matched — "no technician with this skill in this zone" and "everyone is at capacity" need different fixes. It disappears entirely when empty.</li>
+    <li><b>Reassign is an inline dropdown in the row.</b> Balancing workload is comparative — you read down the technician column and move one. As a detail-page action it would mean opening and closing three tickets to rebalance two people.</li>
+  </ul>
+</section>
+
+<!-- ===================== S09 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S09</div>
+    <h2 class="mk-section__title">Asset register and device page</h2>
+    <div class="mk-section__who">Asset officer (desktop) · anyone arriving by QR scan (phone) · demo step 1</div>
+  </div>
+  <div class="mk-split">
+    <div class="mk-phone">
+      <div class="mk-phone__status"><span>09:42</span><span>5G ▮▮▮</span></div>
+      <header class="ds-appbar"><div class="ds-container ds-appbar__inner"><h1 class="ds-appbar__title">AST-001</h1></div></header>
+      <div class="mk-phone__screen">
+        <main class="ds-container ds-main">
+          <div class="ds-row ds-row--between">
+            <div>
+              <h2 style="margin:0">Epson EB-X49</h2>
+              <div class="ds-card__meta">Projector · Lecture Hall 1</div>
+            </div>
+            <span class="ds-chip">In repair</span>
+          </div>
+
+          <div class="ds-card" style="margin-top:var(--ds-space-4)">
+            <div class="ds-row ds-row--between"><span class="ds-muted">Serial</span><b class="ds-tabular">SN-EP-0049</b></div>
+            <div class="ds-row ds-row--between"><span class="ds-muted">Custodian</span><b>ICT Dept</b></div>
+            <div class="ds-row ds-row--between"><span class="ds-muted">Warranty ends</span><b>03/2027</b></div>
+          </div>
+
+          <button class="ds-btn ds-btn--block" style="margin-top:var(--ds-space-4)">Report a fault with this device</button>
+
+          <h3 style="margin-top:var(--ds-space-6)">Repair history · 3 faults</h3>
+          <div class="ds-list">
+            <div class="ds-list__item">
+              <div class="ds-row ds-row--between"><b>TKT-1001</b><span class="ds-chip">In Progress</span></div>
+              <div>Projector shows no signal</div>
+              <div class="ds-timestamp">today</div>
+            </div>
+            <div class="ds-list__item">
+              <div class="ds-row ds-row--between"><b>TKT-1004</b><span class="ds-chip">Closed</span></div>
+              <div>Lamp error on startup — <i>replaced lamp module</i></div>
+              <div class="ds-timestamp">18 Oct</div>
+            </div>
+            <div class="ds-list__item">
+              <div class="ds-row ds-row--between"><b>TKT-1005</b><span class="ds-chip">Closed</span></div>
+              <div>Image flickers — <i>reseated HDMI</i></div>
+              <div class="ds-timestamp">02 Oct</div>
+            </div>
+          </div>
+
+          <div class="ds-notice ds-notice--info" style="margin-top:var(--ds-space-5)">
+            <div>This page opens from the label on the device, and works offline once loaded.</div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <ul class="mk-notes">
+      <li><b>Identity first, then facts.</b> Someone who has just scanned a sticker needs to confirm they are looking at the right machine before anything else.</li>
+      <li><b>Status is top-right because it changes what happens next</b> — "In repair" tells a second person not to report the same fault.</li>
+      <li><b>Report a fault is the only filled button</b>, above the history. Most people scanning a label are standing in front of something broken.</li>
+      <li><b>Facts are a label/value pair list</b>, not prose, so a serial can be read aloud over the phone without hunting for it.</li>
+    </ul>
+  </div>
+
+  <h3 style="margin-top:var(--ds-space-8)">Register — asset officer, desktop</h3>
+  <div class="mk-desktop">
+    <div class="mk-desktop__chrome">
+      <i class="mk-desktop__dot"></i><i class="mk-desktop__dot"></i><i class="mk-desktop__dot"></i>
+      <span class="mk-desktop__url">desktrace.app/devices</span>
+    </div>
+    <main class="ds-container ds-main">
+      <div class="ds-row ds-row--between">
+        <div style="flex:1;max-width:340px">
+          <label class="ds-label" for="d-q" style="margin-top:0">Search devices</label>
+          <input class="ds-input" id="d-q" placeholder="Tag, serial, model, room…">
+        </div>
+        <div class="ds-row">
+          <button class="ds-btn ds-btn--secondary">Print all labels</button>
+          <button class="ds-btn">+ Add device</button>
+        </div>
+      </div>
+      <div class="ds-card ds-table-scroll" style="margin-top:var(--ds-space-4);padding:0">
+        <table class="ds-table">
+          <thead><tr><th>Tag</th><th>Type / model</th><th>Serial</th><th>Location</th><th>Custodian</th><th>Warranty</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><b>AST-001</b></td><td>Projector · Epson EB-X49</td><td class="ds-tabular">SN-EP-0049</td><td>Lecture Hall 1</td><td>ICT Dept</td><td class="ds-tabular">03/2027</td><td><span class="ds-chip">In repair</span></td><td><button class="ds-btn ds-btn--ghost ds-btn--sm">Label</button></td></tr>
+            <tr><td><b>AST-003</b></td><td>Printer · Canon i-SENSYS</td><td class="ds-tabular">SN-CN-0203</td><td>Library</td><td>Library Office</td><td><span class="ds-sla ds-sla--at-risk">11/2026</span></td><td><span class="ds-chip">In use</span></td><td><button class="ds-btn ds-btn--ghost ds-btn--sm">Label</button></td></tr>
+            <tr><td><b>AST-004</b></td><td>Router · TP-Link Archer</td><td class="ds-tabular">SN-TP-0081</td><td>Admin Block</td><td>Admin Office</td><td class="ds-tabular">01/2028</td><td><span class="ds-chip">In use</span></td><td><button class="ds-btn ds-btn--ghost ds-btn--sm">Label</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="ds-help">A warranty inside 60 days is flagged in place — the same expiry logic as the licence tracker, shown where someone can act on it.</p>
+    </main>
+  </div>
+</section>
+
+<!-- ===================== S10 ===================== -->
+<section class="mk-section">
+  <div class="mk-section__head">
+    <div class="mk-section__id">S10</div>
+    <h2 class="mk-section__title">Notifications, and the QR label sheet</h2>
+    <div class="mk-section__who">All roles · asset officer (print) · demo steps 1 and 4</div>
+  </div>
+  <div class="mk-split">
+    <div class="mk-phone">
+      <div class="mk-phone__status"><span>09:45</span><span>5G ▮▮▮</span></div>
+      <header class="ds-appbar"><div class="ds-container ds-appbar__inner">
+        <h1 class="ds-appbar__title">Alerts</h1>
+        <span class="ds-chip" style="background:rgba(255,255,255,.15);color:#fff">2 new</span>
+      </div></header>
+      <div class="mk-phone__screen">
+        <main class="ds-container ds-main">
+          <div class="ds-notice ds-notice--info"><div>Simulated messages. No SMS or WhatsApp provider is connected.</div></div>
+          <div class="ds-stack">
+            <article class="ds-card">
+              <div class="ds-row ds-row--between">
+                <span class="ds-timestamp">09:45 · to Dr. Mensah</span>
+                <span class="ds-chip ds-chip--accent">New</span>
+              </div>
+              <p style="margin:var(--ds-space-2) 0 0">TKT-1001 received. Kofi will handle it.</p>
+            </article>
+            <article class="ds-card">
+              <div class="ds-row ds-row--between">
+                <span class="ds-timestamp">09:45 · to Kofi</span>
+                <span class="ds-chip ds-chip--accent">New</span>
+              </div>
+              <p style="margin:var(--ds-space-2) 0 0">TKT-1001 assigned to you (Critical, Lecture Hall 1).</p>
+            </article>
+            <article class="ds-card">
+              <div class="ds-row ds-row--between">
+                <span class="ds-timestamp">11:45 · to IT Manager</span>
+              </div>
+              <p style="margin:var(--ds-space-2) 0 0">TKT-1001 has breached its resolution SLA.</p>
+            </article>
+          </div>
+          <button class="ds-btn ds-btn--secondary ds-btn--block" style="margin-top:var(--ds-space-4)">Mark all read</button>
+        </main>
+      </div>
+    </div>
+    <ul class="mk-notes">
+      <li><b>The panel says it is simulated, on the panel.</b> The proposal is explicit that messaging is simulated to avoid cost and approval. Saying so turns a limitation into a stated scope decision — and stops an examiner asking whether a real SMS went out.</li>
+      <li><b>Each message names its recipient</b>, so one screen demonstrates what all three actors received.</li>
+    </ul>
+  </div>
+
+  <h3 style="margin-top:var(--ds-space-8)">Printable label sheet — A4, three across</h3>
+  <div class="ds-card">
+    <div class="ds-labels">
+      <div class="ds-label-card">
+        <div class="ds-label-card__tag">AST-001</div>
+        <div class="ds-label-card__qr"><div style="width:84px;height:84px;background:repeating-conic-gradient(var(--ds-ink) 0% 25%, var(--ds-surface) 0% 50%) 0 0/12px 12px"></div></div>
+        <div class="ds-label-card__foot">Projector · Lecture Hall 1<br>Scan to view history</div>
+      </div>
+      <div class="ds-label-card">
+        <div class="ds-label-card__tag">AST-003</div>
+        <div class="ds-label-card__qr"><div style="width:84px;height:84px;background:repeating-conic-gradient(var(--ds-ink) 0% 25%, var(--ds-surface) 0% 50%) 0 0/14px 14px"></div></div>
+        <div class="ds-label-card__foot">Printer · Library<br>Scan to view history</div>
+      </div>
+      <div class="ds-label-card">
+        <div class="ds-label-card__tag">AST-004</div>
+        <div class="ds-label-card__qr"><div style="width:84px;height:84px;background:repeating-conic-gradient(var(--ds-ink) 0% 25%, var(--ds-surface) 0% 50%) 0 0/16px 16px"></div></div>
+        <div class="ds-label-card__foot">Router · Admin Block<br>Scan to view history</div>
+      </div>
+    </div>
+    <p class="ds-help">Placeholder patterns stand in for real QR codes. Dashed borders are cut lines; the tag is monospaced so a 0 read aloud is never heard as an O.</p>
+  </div>
+</section>
+
+<section class="ds-card">
+  <h2 style="margin-top:0">What building these changed in the design system</h2>
+  <p class="ds-muted" style="max-width:68ch">Mockups are the first real test of a design system. Four components were
+  missing and got added rather than faked, and three existing decisions turned out to be wrong:</p>
+  <div class="ds-table-scroll">
+    <table class="ds-table">
+      <thead><tr><th>Change</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><b>Added</b> <code>.ds-table</code></td><td>S08 and S09 are table tasks. Bulk audit and comparison is not a card job.</td></tr>
+        <tr><td><b>Added</b> <code>.ds-upload</code></td><td>Three fixed photo slots, so FR-TKT-01's limit is layout rather than an error message.</td></tr>
+        <tr><td><b>Added</b> <code>.ds-chart</code></td><td>The dashboard needed a chart primitive that the real Chart.js build can mirror.</td></tr>
+        <tr><td><b>Added</b> <code>.ds-hero</code>, <code>.ds-kpi__delta</code></td><td>A dashboard leads with one number, and a figure without a comparison is not yet information.</td></tr>
+        <tr><td><b>Fixed:</b> KPI figures were tabular</td><td>Tabular figures give every digit a zero's width — fine in a column, loose and gappy at 40px. Tabular now belongs to tables, timestamps and the ticking countdown only.</td></tr>
+        <tr><td><b>Fixed:</b> meter track was always neutral</td><td>The unfilled track now takes a light step of the fill's own ramp, so an at-risk state reads across the whole bar instead of only the filled part.</td></tr>
+        <tr><td><b>Fixed:</b> six equal KPI tiles</td><td>Six equals means no hierarchy. One hero plus four tiles says which number matters.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div>
+<script>
+  const btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', () => {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+    btn.setAttribute('aria-pressed', String(!dark));
+    btn.textContent = dark ? 'Dark mode' : 'Light mode';
+  });
+</script>
+</body>
+</html>
