@@ -1,0 +1,111 @@
+/* ==========================================================================
+   DeskTrace Mockups — presentation chrome ONLY
+   CSM 399 Capstone · Group 16 · UI/UX
+   --------------------------------------------------------------------------
+   Everything inside a device frame is built from ../design-system/desktrace.css
+   using its ds- classes. This file only draws the frames and the page around
+   them. If a screen needed a style that is not in the design system, that was
+   a gap in the system and got added there instead of patched here.
+   ========================================================================== */
+
+.mk-page { max-width: 1240px; margin-inline: auto; padding: var(--ds-space-6) var(--ds-space-4) var(--ds-space-12); }
+
+.mk-masthead {
+  background: linear-gradient(135deg, var(--ds-brand), var(--ds-brand-2));
+  color: #fff;
+  border-radius: var(--ds-radius-card);
+  padding: var(--ds-space-6);
+  margin-bottom: var(--ds-space-6);
+  display: flex; flex-wrap: wrap; gap: var(--ds-space-4); align-items: center;
+}
+.mk-masthead h1 { margin: 0; font-size: var(--ds-text-2xl); }
+.mk-masthead p { margin: var(--ds-space-1) 0 0; opacity: .82; font-size: var(--ds-text-sm); }
+.mk-masthead__spacer { margin-left: auto; }
+
+.mk-section { margin-block: var(--ds-space-12); }
+.mk-section__head { margin-bottom: var(--ds-space-5); }
+.mk-section__id {
+  font-family: var(--ds-font-mono); font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-bold); color: var(--ds-accent); letter-spacing: .08em;
+}
+.mk-section__title { margin: var(--ds-space-1) 0; font-size: var(--ds-text-xl); }
+.mk-section__who { color: var(--ds-ink-2); font-size: var(--ds-text-sm); }
+
+.mk-split { display: grid; gap: var(--ds-space-6); grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 980px) { .mk-split { grid-template-columns: auto 1fr; } }
+
+/* --- Device frames ------------------------------------------------------- */
+
+.mk-phone {
+  width: 375px; flex: none;
+  border: 10px solid #1b2430;
+  border-radius: 34px;
+  overflow: hidden;
+  background: var(--ds-bg);
+  box-shadow: var(--ds-shadow-3);
+}
+.mk-phone__status {
+  background: var(--ds-brand); color: #fff;
+  font-size: var(--ds-text-2xs);
+  padding: var(--ds-space-1) var(--ds-space-4);
+  display: flex; justify-content: space-between;
+}
+.mk-phone__screen { max-height: 680px; overflow-y: auto; scrollbar-width: thin; }
+
+.mk-desktop {
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-card);
+  overflow: hidden;
+  background: var(--ds-bg);
+  box-shadow: var(--ds-shadow-3);
+}
+.mk-desktop__chrome {
+  display: flex; align-items: center; gap: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  background: var(--ds-surface-2);
+  border-bottom: 1px solid var(--ds-line);
+}
+.mk-desktop__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ds-line-control); opacity: .5; }
+.mk-desktop__url {
+  flex: 1; margin-left: var(--ds-space-2);
+  background: var(--ds-surface); border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-pill);
+  padding: 2px var(--ds-space-3);
+  font-family: var(--ds-font-mono); font-size: var(--ds-text-2xs); color: var(--ds-ink-2);
+}
+
+/* --- Phone breakpoint shim ------------------------------------------------
+   A media query reads the real browser viewport, not the 375px frame it is
+   drawn inside. Without this, a phone frame on a desktop page would lay its
+   cards out in three columns. These rules reproduce the design system's own
+   <600px behaviour inside the frame, and nothing else. Resize the real window
+   to confirm the genuine breakpoints — that is what the system actually ships.
+   -------------------------------------------------------------------------- */
+
+.mk-phone .ds-grid { grid-template-columns: 1fr; }
+.mk-phone .ds-actions .ds-btn { flex: 1 1 100%; }
+.mk-phone .ds-field-grid { grid-template-columns: 1fr; }
+.mk-phone .ds-container { padding-inline: var(--ds-space-4); }
+.mk-phone .ds-main { padding-block: var(--ds-space-4); }
+.mk-phone .ds-labels { grid-template-columns: 1fr 1fr; }
+
+/* --- Notes beside a screen ------------------------------------------------ */
+
+.mk-notes { list-style: none; margin: 0; padding: 0; }
+.mk-notes li {
+  padding-left: var(--ds-space-4);
+  border-left: 2px solid var(--ds-accent-tint);
+  margin-bottom: var(--ds-space-4);
+  font-size: var(--ds-text-sm);
+}
+.mk-notes b { font-weight: var(--ds-weight-medium); }
+
+.mk-flow {
+  display: flex; flex-wrap: wrap; gap: var(--ds-space-2);
+  font-size: var(--ds-text-sm); color: var(--ds-ink-2);
+}
+
+@media print {
+  .mk-phone, .mk-desktop { box-shadow: none; break-inside: avoid; }
+  .mk-masthead { background: none; color: var(--ds-ink); border: 1px solid var(--ds-line); }
+}

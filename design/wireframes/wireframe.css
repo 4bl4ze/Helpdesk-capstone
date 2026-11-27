@@ -1,0 +1,286 @@
+/* ==========================================================================
+   DeskTrace Wireframe Kit
+   CSM 399 Capstone · Group 16 · UI/UX
+   --------------------------------------------------------------------------
+   DELIBERATELY LOW FIDELITY. Greyscale only, no brand colour, no shadows.
+
+   Why: a wireframe shown in the real palette gets reviewed as if it were
+   the finished design — people argue about the shade of the button and
+   miss that the form is in the wrong order. Stripping colour forces the
+   review onto layout, hierarchy and flow, which is all a wireframe is for.
+   The one exception is the orange callout markers, which are review
+   annotations and are not part of any screen.
+
+   This file is NOT the design system. Nothing here ships. When a screen is
+   approved it gets rebuilt with ../design-system/desktrace.css.
+   ========================================================================== */
+
+:root {
+  --wf-paper: #ffffff;
+  --wf-fill: #f1f1f1;
+  --wf-fill-2: #e4e4e4;
+  --wf-fill-3: #d2d2d2;
+  --wf-line: #bdbdbd;
+  --wf-line-strong: #8d8d8d;
+  --wf-ink: #262626;
+  --wf-ink-2: #6b6b6b;
+  --wf-dark: #3f3f3f;
+  --wf-callout: #c2410c;
+  --wf-font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --wf-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--wf-font);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--wf-ink);
+  background: #e9ebee;
+}
+
+/* --------------------------------------------------------------------------
+   Page chrome (the document around the wireframes)
+   -------------------------------------------------------------------------- */
+
+.wf-page { max-width: 1180px; margin-inline: auto; padding: 24px 16px 64px; }
+
+.wf-masthead {
+  background: var(--wf-dark); color: #fff;
+  padding: 20px 24px; border-radius: 10px; margin-bottom: 24px;
+}
+.wf-masthead h1 { margin: 0 0 4px; font-size: 24px; }
+.wf-masthead p { margin: 0; opacity: .8; font-size: 14px; }
+
+.wf-screen {
+  background: var(--wf-paper);
+  border: 1px solid var(--wf-line);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.wf-screen__head { border-bottom: 2px solid var(--wf-ink); padding-bottom: 10px; margin-bottom: 16px; }
+.wf-screen__id {
+  font-family: var(--wf-mono); font-size: 13px; font-weight: 700;
+  color: var(--wf-ink-2); letter-spacing: .06em;
+}
+.wf-screen__title { margin: 2px 0 4px; font-size: 20px; }
+.wf-screen__who { font-size: 13px; color: var(--wf-ink-2); }
+
+/* Screen beside its annotations; stacks on a narrow window */
+.wf-split { display: grid; gap: 24px; grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 880px) {
+  .wf-split { grid-template-columns: auto 1fr; }
+  .wf-split--wide { grid-template-columns: 1fr; }
+}
+
+/* --------------------------------------------------------------------------
+   Device frames
+   -------------------------------------------------------------------------- */
+
+.wf-phone {
+  width: 340px; flex: none;
+  border: 2px solid var(--wf-line-strong);
+  border-radius: 20px;
+  background: var(--wf-paper);
+  overflow: hidden;
+}
+.wf-phone__notch {
+  height: 22px; background: var(--wf-fill-2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 12px; font-size: 10px; color: var(--wf-ink-2);
+}
+.wf-phone__body { padding: 0; }
+.wf-phone--tall .wf-phone__body { min-height: 560px; }
+
+.wf-desktop {
+  border: 2px solid var(--wf-line-strong);
+  border-radius: 10px;
+  overflow: hidden; background: var(--wf-paper);
+}
+.wf-desktop__chrome {
+  height: 26px; background: var(--wf-fill-2);
+  display: flex; align-items: center; gap: 6px; padding: 0 10px;
+  font-size: 10px; color: var(--wf-ink-2);
+}
+.wf-desktop__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--wf-line); }
+.wf-desktop__url {
+  margin-left: 8px; background: var(--wf-paper); border: 1px solid var(--wf-line);
+  border-radius: 10px; padding: 0 10px; font-family: var(--wf-mono);
+}
+
+/* --------------------------------------------------------------------------
+   In-screen primitives
+   -------------------------------------------------------------------------- */
+
+.wf-appbar {
+  background: var(--wf-dark); color: #fff;
+  padding: 10px 12px; display: flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600;
+}
+.wf-appbar__spacer { margin-left: auto; font-weight: 400; opacity: .85; font-size: 12px; }
+
+.wf-tabs { display: flex; border-bottom: 1px solid var(--wf-line); background: var(--wf-fill); }
+.wf-tab {
+  flex: 1; text-align: center; padding: 9px 6px;
+  font-size: 12px; color: var(--wf-ink-2);
+  border-bottom: 3px solid transparent;
+}
+.wf-tab.is-on { color: var(--wf-ink); border-bottom-color: var(--wf-ink); font-weight: 600; background: var(--wf-paper); }
+
+.wf-body { padding: 12px; }
+.wf-body > * + * { margin-top: 10px; }
+
+.wf-h { font-size: 15px; font-weight: 700; margin: 0; }
+.wf-sub { font-size: 12px; color: var(--wf-ink-2); margin: 0; }
+
+.wf-card {
+  border: 1px solid var(--wf-line);
+  border-radius: 6px; padding: 10px; background: var(--wf-paper);
+}
+.wf-card--rail { border-left: 5px solid var(--wf-line-strong); }
+.wf-card--pending { border-style: dashed; background: var(--wf-fill); }
+
+.wf-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.wf-row--between { justify-content: space-between; }
+
+.wf-chip {
+  border: 1px solid var(--wf-line); border-radius: 99px;
+  padding: 1px 8px; font-size: 11px; color: var(--wf-ink-2);
+  background: var(--wf-fill); white-space: nowrap;
+}
+.wf-chip--solid { background: var(--wf-fill-3); color: var(--wf-ink); border-color: var(--wf-line-strong); }
+
+/* Severity meter, greyscale version of the real component */
+.wf-meter { display: inline-flex; gap: 2px; align-items: flex-end; }
+.wf-meter i { width: 4px; height: 12px; border: 1px solid var(--wf-line-strong); border-radius: 1px; }
+.wf-meter i.on { background: var(--wf-ink); border-color: var(--wf-ink); }
+
+.wf-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 36px; padding: 6px 12px;
+  border: 1px solid var(--wf-line-strong); border-radius: 6px;
+  background: var(--wf-paper); color: var(--wf-ink);
+  font-size: 13px; font-family: inherit;
+}
+.wf-btn--primary { background: var(--wf-dark); color: #fff; border-color: var(--wf-dark); font-weight: 600; }
+.wf-btn--block { width: 100%; }
+.wf-btn--sm { min-height: 28px; font-size: 12px; padding: 2px 8px; }
+
+.wf-field { border: 1px solid var(--wf-line-strong); border-radius: 6px; padding: 8px 10px; background: var(--wf-paper); }
+.wf-field__label { display: block; font-size: 11px; color: var(--wf-ink-2); margin-bottom: 3px; font-weight: 600; }
+.wf-field__value { font-size: 14px; }
+.wf-field__value--placeholder { color: var(--wf-ink-2); }
+.wf-field--area { min-height: 68px; }
+.wf-field--select .wf-field__value::after { content: " ▾"; color: var(--wf-ink-2); }
+
+/* Segmented control — one tap, no dropdown */
+.wf-seg { display: flex; border: 1px solid var(--wf-line-strong); border-radius: 6px; overflow: hidden; }
+.wf-seg > span {
+  flex: 1; text-align: center; padding: 6px 2px;
+  font-size: 11px; border-right: 1px solid var(--wf-line);
+  line-height: 1.25;
+}
+.wf-seg > span:last-child { border-right: 0; }
+.wf-seg > span.is-on { background: var(--wf-dark); color: #fff; font-weight: 600; }
+.wf-seg small { display: block; font-size: 9px; opacity: .75; }
+
+/* Placeholder blocks: crossed box = media, plain = unspecified */
+.wf-media {
+  background: var(--wf-fill);
+  border: 1px solid var(--wf-line);
+  position: relative; display: grid; place-items: center;
+  font-size: 10px; color: var(--wf-ink-2);
+  min-height: 56px;
+}
+.wf-media::before, .wf-media::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top right, transparent calc(50% - 0.5px), var(--wf-line) 50%, transparent calc(50% + 0.5px));
+}
+.wf-media::after { background: linear-gradient(to bottom right, transparent calc(50% - 0.5px), var(--wf-line) 50%, transparent calc(50% + 0.5px)); }
+.wf-media > span { position: relative; background: var(--wf-fill); padding: 0 4px; }
+
+.wf-qr {
+  width: 72px; height: 72px;
+  background: repeating-conic-gradient(var(--wf-ink) 0% 25%, var(--wf-paper) 0% 50%) 0 0 / 12px 12px;
+  border: 1px solid var(--wf-line);
+}
+
+.wf-bar { height: 7px; background: var(--wf-fill-2); border-radius: 99px; overflow: hidden; }
+.wf-bar > i { display: block; height: 100%; background: var(--wf-line-strong); }
+.wf-bar > i.hatch {
+  background: repeating-linear-gradient(45deg, var(--wf-ink) 0 4px, var(--wf-fill-3) 4px 8px);
+}
+
+.wf-note-strip {
+  border: 1px dashed var(--wf-line-strong);
+  background: var(--wf-fill);
+  padding: 7px 9px; border-radius: 6px; font-size: 12px;
+}
+
+.wf-list { border-top: 1px solid var(--wf-line); }
+.wf-list__item { padding: 7px 0; border-bottom: 1px solid var(--wf-line); font-size: 12px; }
+
+.wf-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.wf-table th, .wf-table td { border: 1px solid var(--wf-line); padding: 6px 8px; text-align: left; }
+.wf-table th { background: var(--wf-fill); font-size: 11px; color: var(--wf-ink-2); text-transform: uppercase; letter-spacing: .04em; }
+
+.wf-chart {
+  border: 1px solid var(--wf-line); background: var(--wf-fill);
+  padding: 8px; border-radius: 6px;
+}
+.wf-chart__bars { display: flex; align-items: flex-end; gap: 6px; height: 72px; }
+.wf-chart__bars i { flex: 1; background: var(--wf-line-strong); border-radius: 2px 2px 0 0; }
+
+.wf-kpi { border: 1px solid var(--wf-line); border-radius: 6px; padding: 8px 10px; }
+.wf-kpi__label { font-size: 10px; color: var(--wf-ink-2); text-transform: uppercase; letter-spacing: .04em; }
+.wf-kpi__value { font-size: 24px; font-weight: 700; line-height: 1.15; }
+
+.wf-grid-2 { display: grid; gap: 8px; grid-template-columns: 1fr 1fr; }
+.wf-grid-3 { display: grid; gap: 8px; grid-template-columns: repeat(3, 1fr); }
+.wf-grid-4 { display: grid; gap: 8px; grid-template-columns: repeat(4, 1fr); }
+
+/* Sticky bottom action on phone screens */
+.wf-sticky {
+  border-top: 1px solid var(--wf-line);
+  background: var(--wf-fill);
+  padding: 10px 12px;
+}
+
+/* --------------------------------------------------------------------------
+   Review annotations (the only colour on the page)
+   -------------------------------------------------------------------------- */
+
+.wf-pin {
+  display: inline-grid; place-items: center;
+  width: 20px; height: 20px; flex: none;
+  border-radius: 50%; background: var(--wf-callout); color: #fff;
+  font-size: 11px; font-weight: 700; font-family: var(--wf-font);
+  vertical-align: 1px;
+}
+/* Markers sit in the flow, immediately before the thing they annotate, so
+   they cannot drift out of alignment when content changes. Any inline
+   left/top values in the markup are inert. */
+.wf-pin--float { position: static; margin: 0 0 -7px -3px; }
+.wf-anchor { position: relative; }
+
+.wf-notes { list-style: none; margin: 0; padding: 0; }
+.wf-notes li { display: flex; gap: 10px; margin-bottom: 12px; font-size: 14px; }
+.wf-notes b { font-weight: 600; }
+
+.wf-trace {
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--wf-line);
+  font-size: 13px; color: var(--wf-ink-2);
+}
+.wf-trace code {
+  font-family: var(--wf-mono); font-size: 12px;
+  background: var(--wf-fill-2); padding: 1px 5px; border-radius: 3px; color: var(--wf-ink);
+}
+
+@media print {
+  body { background: #fff; }
+  .wf-screen { break-inside: avoid; border-color: #999; }
+  .wf-masthead { background: #fff; color: #000; border: 1px solid #999; }
+}

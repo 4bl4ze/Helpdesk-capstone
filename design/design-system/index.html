@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12263f">
+<title>DeskTrace Design System</title>
+<link rel="stylesheet" href="desktrace.css">
+<style>
+  /* Style-guide chrome only. Nothing here belongs in the app. */
+  .sg-section { margin-block: var(--ds-space-10); scroll-margin-top: var(--ds-space-6); }
+  .sg-section > h2 { margin-top: 0; }
+  .sg-lede { color: var(--ds-ink-2); max-width: 62ch; }
+  .sg-demo {
+    border: 1px solid var(--ds-line); border-radius: var(--ds-radius-card);
+    padding: var(--ds-space-4); background: var(--ds-surface);
+  }
+  .sg-swatches { display: grid; gap: var(--ds-space-2); grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+  .sg-swatch { border: 1px solid var(--ds-line); border-radius: var(--ds-radius-control); overflow: hidden; }
+  .sg-swatch__chip { height: 56px; }
+  .sg-swatch__body { padding: var(--ds-space-2) var(--ds-space-3); font-size: var(--ds-text-xs); }
+  .sg-swatch__name { font-weight: var(--ds-weight-medium); }
+  .sg-swatch__hex { font-family: var(--ds-font-mono); color: var(--ds-ink-2); text-transform: uppercase; }
+  .sg-swatch__ratio { color: var(--ds-ok-text); font-weight: var(--ds-weight-medium); }
+  table { width: 100%; border-collapse: collapse; font-size: var(--ds-text-sm); }
+  th, td { text-align: left; padding: var(--ds-space-2); border-bottom: 1px solid var(--ds-line); vertical-align: baseline; }
+  th { color: var(--ds-ink-2); font-size: var(--ds-text-xs); text-transform: uppercase; letter-spacing: .04em; }
+  code { font-family: var(--ds-font-mono); font-size: 0.9em; background: var(--ds-surface-2); padding: 1px 5px; border-radius: 4px; }
+  .sg-space-bar { background: var(--ds-accent); height: 14px; border-radius: 2px; }
+  .sg-rules { counter-reset: r; list-style: none; padding: 0; }
+  .sg-rules li { counter-increment: r; position: relative; padding-left: var(--ds-space-8); margin-bottom: var(--ds-space-3); }
+  .sg-rules li::before {
+    content: counter(r); position: absolute; left: 0; top: 0;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--ds-accent); color: var(--ds-accent-ink);
+    display: grid; place-items: center; font-size: var(--ds-text-xs); font-weight: 700;
+  }
+  .sg-do-dont { display: grid; gap: var(--ds-space-3); grid-template-columns: 1fr; }
+  @media (min-width: 700px) { .sg-do-dont { grid-template-columns: 1fr 1fr; } }
+  .sg-do, .sg-dont { padding: var(--ds-space-3); border-radius: var(--ds-radius-control); border: 1px solid var(--ds-line); }
+  .sg-do { background: var(--ds-ok-soft); border-color: var(--ds-ok); }
+  .sg-dont { background: var(--ds-bad-soft); border-color: var(--ds-bad); }
+  .sg-do h4, .sg-dont h4 { margin-top: 0; font-size: var(--ds-text-sm); text-transform: uppercase; letter-spacing: .04em; }
+  .sg-do h4 { color: var(--ds-ok-text); } .sg-dont h4 { color: var(--ds-bad-text); }
+  .sg-toc { display: flex; flex-wrap: wrap; gap: var(--ds-space-2); }
+  .sg-toc a { font-size: var(--ds-text-sm); text-decoration: none; }
+  .sg-grey { filter: grayscale(1); }
+</style>
+</head>
+<body>
+
+<header class="ds-appbar">
+  <div class="ds-container ds-appbar__inner">
+    <h1 class="ds-appbar__title">DeskTrace Design System</h1>
+    <span class="ds-chip ds-chip--accent">v2.0 · modern</span>
+    <button class="ds-btn ds-btn--secondary ds-btn--sm" id="themeToggle" aria-pressed="false">Dark mode</button>
+  </div>
+</header>
+
+<main class="ds-container ds-main">
+
+  <p class="sg-lede">
+    The shared visual language for DeskTrace. Everything on this page comes from
+    <code>desktrace.css</code> — import that one file and these classes work in the
+    prototype today and in the React app later. CSM&nbsp;399 Capstone, Group&nbsp;16.
+  </p>
+
+  <nav class="sg-toc" aria-label="Sections">
+    <a class="ds-chip ds-chip--accent" href="#rules">Rules</a>
+    <a class="ds-chip ds-chip--accent" href="#whatsnew">What's new in v2</a>
+    <a class="ds-chip ds-chip--accent" href="#colour">Colour</a>
+    <a class="ds-chip ds-chip--accent" href="#type">Typography</a>
+    <a class="ds-chip ds-chip--accent" href="#space">Space</a>
+    <a class="ds-chip ds-chip--accent" href="#signals">Status signals</a>
+    <a class="ds-chip ds-chip--accent" href="#controls">Controls</a>
+    <a class="ds-chip ds-chip--accent" href="#patterns">Patterns</a>
+    <a class="ds-chip ds-chip--accent" href="#responsive">Responsive</a>
+  </nav>
+
+  <!-- ================= RULES ================= -->
+  <section class="sg-section" id="rules">
+    <h2>The six rules</h2>
+    <p class="sg-lede">Every decision below follows from these. If a new screen breaks one, the screen is wrong, not the rule.</p>
+    <ol class="sg-rules">
+      <li><strong>Colour is never the only signal.</strong> An SLA breach is red <em>and</em> carries a ✕ <em>and</em> says “Breached”. Roughly one man in twelve cannot separate our red from our green, and a lecture-hall projector washes out both.</li>
+      <li><strong>Verified contrast, not guessed.</strong> Every text pair here is ≥4.5:1; every control border and focus ring ≥3:1. Numbers are printed on the swatches.</li>
+      <li><strong>No web fonts, no icon fonts.</strong> DeskTrace is offline-first (FR-OFF-01). A font that fails to load is a broken screen, so we use the system stack and text glyphs.</li>
+      <li><strong>Body and form text is 16px.</strong> Below 16px, iOS Safari zooms the page when a field is focused — unusable for a requester filing a ticket one-handed.</li>
+      <li><strong>Touch targets are at least 44×44px.</strong> Technicians use this standing up, in a corridor, holding equipment.</li>
+      <li><strong>Three signals, three languages.</strong> Status is a word, priority is a shape, SLA is a colour. They never compete for the same attention.</li>
+    </ol>
+  </section>
+
+  <!-- ================= WHAT'S NEW ================= -->
+  <section class="sg-section" id="whatsnew">
+    <h2>What changed in v2</h2>
+    <p class="sg-lede">v2 is a visual refresh, not a rewrite. <strong>Every class name is unchanged</strong>, so
+    anything already built against v1 keeps working — a design system that renames its API on every restyle
+    is not a system. All six rules above survived intact, and the whole palette was re-verified: 44 pairs, all passing.</p>
+    <div class="sg-demo">
+      <table>
+        <thead><tr><th>Area</th><th>v1</th><th>v2</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Neutrals</td><td>Flat blue-grey</td><td>Cool slate</td><td>Tinted neutrals read as considered; pure greys read as unstyled.</td></tr>
+          <tr><td>Depth</td><td>1px border on every box</td><td>Layered soft shadows</td><td>Fewer lines, more light. The single biggest difference between a 2015 and a 2026 interface.</td></tr>
+          <tr><td>Radius</td><td>6 / 10px</td><td>10 / 16px</td><td>Softer shapes; matches the larger touch targets rather than fighting them.</td></tr>
+          <tr><td>Accent</td><td>One hex</td><td>A ramp (tint → hover)</td><td>Hover and tint states are now derived from the accent, not invented next to it.</td></tr>
+          <tr><td>Semantics</td><td>Muted green / brown / brick</td><td>Emerald / amber / rose</td><td>More saturated and more current — and all three still clear AA on white and on their tints.</td></tr>
+          <tr><td>Headings</td><td>700, normal tracking</td><td>800, −0.02em</td><td>Tighter tracking at large sizes gives a firmer hierarchy without a bigger scale.</td></tr>
+          <tr><td>Tabs</td><td>Underline</td><td>Sliding pill</td><td>Reads as a control rather than as a border.</td></tr>
+          <tr><td>New</td><td>—</td><td>Segmented control, timeline, sticky action bar</td><td>Patterns the wireframes introduced (S02, S04, S06) now have real components.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sg-do-dont" style="margin-top:var(--ds-space-4)">
+      <div class="sg-do">
+        <h4>Kept</h4>
+        <p class="ds-muted" style="margin:0">System fonts, 16px inputs, 44px targets, verified contrast, and colour never alone. These are requirements, not taste — FR-OFF-01 and WCAG don't move because the look did.</p>
+      </div>
+      <div class="sg-dont">
+        <h4>Resisted</h4>
+        <p class="ds-muted" style="margin:0">Web fonts, icon libraries, glassmorphism over content, and low-contrast grey-on-grey text. All currently fashionable; all break a rule above.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COLOUR ================= -->
+  <section class="sg-section" id="colour">
+    <h2>Colour</h2>
+    <p class="sg-lede">Ratios are measured against the surface the colour sits on, in light mode. Dark mode values are in the stylesheet and all pass too.</p>
+
+    <h3>Brand and neutral</h3>
+    <div class="sg-swatches">
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:linear-gradient(135deg,#0F1E2E,#13324A)"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Brand gradient</div><div class="sg-swatch__hex">#0F1E2E → #13324A</div><div class="sg-swatch__ratio">16.86:1 white on it</div></div></div>
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#0e7489"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Accent / action</div><div class="sg-swatch__hex">#0E7489</div><div class="sg-swatch__ratio">5.42:1</div></div></div>
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#0b5f70"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Accent hover</div><div class="sg-swatch__hex">#0B5F70</div><div class="sg-swatch__ratio">7.28:1</div></div></div>
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#0f172a"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Ink</div><div class="sg-swatch__hex">#0F172A</div><div class="sg-swatch__ratio">17.85:1</div></div></div>
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#475569"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Ink secondary</div><div class="sg-swatch__hex">#475569</div><div class="sg-swatch__ratio">7.58:1</div></div></div>
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#64748b"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Control border</div><div class="sg-swatch__hex">#64748B</div><div class="sg-swatch__ratio">4.76:1 (non-text)</div></div></div>
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#f6f8fa;border-bottom:1px solid #e2e8f0"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Page</div><div class="sg-swatch__hex">#F6F8FA</div><div class="sg-swatch__ratio">base</div></div></div>
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#eef2f6;border-bottom:1px solid #e2e8f0"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Inset / track</div><div class="sg-swatch__hex">#EEF2F6</div><div class="sg-swatch__ratio">base</div></div></div>
+    </div>
+
+    <h3>SLA semantics</h3>
+    <p class="ds-muted">These three are the only colours allowed to carry meaning, and only ever alongside an icon and a word.</p>
+    <div class="sg-swatches">
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#047857"></div><div class="sg-swatch__body"><div class="sg-swatch__name">On time</div><div class="sg-swatch__hex">#047857</div><div class="sg-swatch__ratio">5.48:1</div></div></div>
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#b45309"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Due soon (≥75%)</div><div class="sg-swatch__hex">#B45309</div><div class="sg-swatch__ratio">5.02:1</div></div></div>
+      <div class="sg-swatch"><div class="sg-swatch__chip" style="background:#be123c"></div><div class="sg-swatch__body"><div class="sg-swatch__name">Breached</div><div class="sg-swatch__hex">#BE123C</div><div class="sg-swatch__ratio">6.29:1</div></div></div>
+    </div>
+  </section>
+
+  <!-- ================= TYPE ================= -->
+  <section class="sg-section" id="type">
+    <h2>Typography</h2>
+    <p class="sg-lede">System font stack, modular scale at ratio 1.2 on a 16px base. Sizes are in <code>rem</code> so the browser's text-size setting still works.</p>
+    <div class="sg-demo">
+      <table>
+        <thead><tr><th>Token</th><th>Size</th><th>Used for</th><th>Sample</th></tr></thead>
+        <tbody>
+          <tr><td><code>--ds-text-kpi</code></td><td>40px</td><td>Dashboard figures</td><td style="font-size:var(--ds-text-kpi);font-weight:800;letter-spacing:-.02em;line-height:1.05">94%</td></tr>
+          <tr><td><code>--ds-text-2xl</code></td><td>28px</td><td>Page title</td><td style="font-size:var(--ds-text-2xl);font-weight:700">My tickets</td></tr>
+          <tr><td><code>--ds-text-xl</code></td><td>22px</td><td>Section heading</td><td style="font-size:var(--ds-text-xl);font-weight:700">Open faults</td></tr>
+          <tr><td><code>--ds-text-lg</code></td><td>18px</td><td>Card title</td><td style="font-size:var(--ds-text-lg);font-weight:700">TKT-1001</td></tr>
+          <tr><td><code>--ds-text-base</code></td><td>16px</td><td>Body, every form control</td><td>Projector shows no signal</td></tr>
+          <tr><td><code>--ds-text-sm</code></td><td>14px</td><td>Chips, buttons, secondary</td><td style="font-size:var(--ds-text-sm)">Lecture Hall 1 · AST-001</td></tr>
+          <tr><td><code>--ds-text-xs</code></td><td>13px</td><td>Field labels, meta</td><td style="font-size:var(--ds-text-xs)">Reported by Dr. Mensah</td></tr>
+          <tr><td><code>--ds-text-2xs</code></td><td>12px</td><td>Timestamps only</td><td class="ds-timestamp">25/11/2026, 13:32</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= SPACE ================= -->
+  <section class="sg-section" id="space">
+    <h2>Space, shape and depth</h2>
+    <p class="sg-lede">A 4px base scale. Pick from the scale; never type an arbitrary pixel value.</p>
+    <div class="sg-demo">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Typical use</th><th style="width:40%">Scale</th></tr></thead>
+        <tbody>
+          <tr><td><code>--ds-space-1</code></td><td>4px</td><td>Icon to label</td><td><div class="sg-space-bar" style="width:4px"></div></td></tr>
+          <tr><td><code>--ds-space-2</code></td><td>8px</td><td>Inside chips, button gaps</td><td><div class="sg-space-bar" style="width:8px"></div></td></tr>
+          <tr><td><code>--ds-space-3</code></td><td>12px</td><td>Grid gaps, field padding</td><td><div class="sg-space-bar" style="width:12px"></div></td></tr>
+          <tr><td><code>--ds-space-4</code></td><td>16px</td><td>Card padding</td><td><div class="sg-space-bar" style="width:16px"></div></td></tr>
+          <tr><td><code>--ds-space-6</code></td><td>24px</td><td>Between sections</td><td><div class="sg-space-bar" style="width:24px"></div></td></tr>
+          <tr><td><code>--ds-space-8</code></td><td>32px</td><td>Empty states</td><td><div class="sg-space-bar" style="width:32px"></div></td></tr>
+          <tr><td><code>--ds-radius-control</code></td><td>10px</td><td>Buttons, inputs</td><td><div style="width:60px;height:28px;background:var(--ds-surface-2);border:1px solid var(--ds-line-control);border-radius:10px"></div></td></tr>
+          <tr><td><code>--ds-radius-card</code></td><td>16px</td><td>Cards</td><td><div style="width:60px;height:28px;background:var(--ds-surface-2);border:1px solid var(--ds-line);border-radius:16px"></div></td></tr>
+          <tr><td><code>--ds-shadow-1</code></td><td>2 layers</td><td>Resting cards, buttons</td><td><div style="width:60px;height:28px;background:var(--ds-surface);border:1px solid var(--ds-line);border-radius:10px;box-shadow:var(--ds-shadow-1)"></div></td></tr>
+          <tr><td><code>--ds-shadow-2</code></td><td>2 layers</td><td>Hover, raised</td><td><div style="width:60px;height:28px;background:var(--ds-surface);border:1px solid var(--ds-line);border-radius:10px;box-shadow:var(--ds-shadow-2)"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= SIGNALS ================= -->
+  <section class="sg-section" id="signals">
+    <h2>Status signals — the important part</h2>
+    <p class="sg-lede">DeskTrace shows three different things about a ticket at once. If all three used colour, the screen would be noise. So each gets its own language.</p>
+
+    <h3>1 · Ticket status — a word</h3>
+    <p class="ds-muted">Neutral on purpose. Six statuses cannot be told apart by colour anyway, and the word is unambiguous. Two carry a glyph because they change the SLA clock.</p>
+    <div class="sg-demo ds-row">
+      <span class="ds-chip ds-status ds-status--new">New</span>
+      <span class="ds-chip ds-status">Assigned</span>
+      <span class="ds-chip ds-status">In Progress</span>
+      <span class="ds-chip ds-status ds-status--waiting">Waiting</span>
+      <span class="ds-chip ds-status">Resolved</span>
+      <span class="ds-chip ds-status">Closed</span>
+    </div>
+
+    <h3>2 · Priority — a shape</h3>
+    <p class="ds-muted">A four-step meter. Severity is read from how many bars are filled, so it survives greyscale, colour blindness and a washed-out projector. Only Critical also takes colour.</p>
+    <div class="sg-demo ds-row" style="gap:var(--ds-space-6)">
+      <span class="ds-priority ds-priority--low"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">Low</span></span>
+      <span class="ds-priority ds-priority--medium"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">Medium</span></span>
+      <span class="ds-priority ds-priority--high"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">High</span></span>
+      <span class="ds-priority ds-priority--critical"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">Critical</span></span>
+    </div>
+
+    <h3>3 · SLA state — colour, icon and word together</h3>
+    <p class="ds-muted">The only place colour carries meaning. Never ship one of these without its icon and its label.</p>
+    <div class="sg-demo ds-row">
+      <span class="ds-sla ds-sla--ok">On time · 51m left</span>
+      <span class="ds-sla ds-sla--at-risk">Due soon · 12m left</span>
+      <span class="ds-sla ds-sla--breached">Breached · 2h over</span>
+      <span class="ds-sla ds-sla--paused">Paused · waiting on part</span>
+      <span class="ds-sla ds-sla--pending">Pending sync</span>
+    </div>
+
+    <h3>Proof: the same row in greyscale</h3>
+    <p class="ds-muted">Colour removed. Everything is still readable — that is the test any new component has to pass.</p>
+    <div class="sg-demo ds-row sg-grey">
+      <span class="ds-sla ds-sla--ok">On time</span>
+      <span class="ds-sla ds-sla--at-risk">Due soon</span>
+      <span class="ds-sla ds-sla--breached">Breached</span>
+      <span class="ds-priority ds-priority--critical"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">Critical</span></span>
+      <span class="ds-priority ds-priority--low"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">Low</span></span>
+    </div>
+
+    <h3>SLA countdown bar</h3>
+    <div class="sg-demo ds-stack">
+      <div><span class="ds-muted">42% elapsed — on time</span><div class="ds-bar"><i style="width:42%"></i></div></div>
+      <div><span class="ds-muted">81% elapsed — due soon, striped</span><div class="ds-bar ds-bar--at-risk"><i style="width:81%"></i></div></div>
+      <div><span class="ds-muted">100% — breached, striped</span><div class="ds-bar ds-bar--breached"><i style="width:100%"></i></div></div>
+    </div>
+
+    <div class="sg-do-dont" style="margin-top:var(--ds-space-4)">
+      <div class="sg-do">
+        <h4>Do</h4>
+        <p style="margin:0"><span class="ds-sla ds-sla--breached">Breached · 2h over</span></p>
+        <p class="ds-muted" style="margin-top:var(--ds-space-2)">Colour, icon and words. Readable in greyscale, on a projector, by a colour-blind marker.</p>
+      </div>
+      <div class="sg-dont">
+        <h4>Don't</h4>
+        <p style="margin:0"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#bd2929;vertical-align:middle"></span> <span class="ds-muted">a bare red dot</span></p>
+        <p class="ds-muted" style="margin-top:var(--ds-space-2)">Meaning carried by hue alone. Fails WCAG 1.4.1 and fails anyone looking at the back of the room.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTROLS ================= -->
+  <section class="sg-section" id="controls">
+    <h2>Controls</h2>
+
+    <h3>Buttons</h3>
+    <p class="ds-muted">One primary action per screen region. 44px minimum height; full width when stacked on a phone.</p>
+    <div class="sg-demo ds-actions">
+      <button class="ds-btn">Send ticket</button>
+      <button class="ds-btn ds-btn--secondary">Set waiting</button>
+      <button class="ds-btn ds-btn--ghost">View history</button>
+      <button class="ds-btn ds-btn--danger">Delete device</button>
+      <button class="ds-btn ds-btn--sm ds-btn--secondary">Small</button>
+      <button class="ds-btn" disabled>Disabled</button>
+    </div>
+
+    <h3>Tabs</h3>
+    <p class="ds-muted">A pill that moves, rather than an underline. Scrolls horizontally on a phone without a scrollbar.</p>
+    <div class="sg-demo">
+      <nav class="ds-tabs" aria-label="Example">
+        <button class="ds-tab" aria-current="page">Tickets</button>
+        <button class="ds-tab">Devices</button>
+        <button class="ds-tab">Dashboard</button>
+        <button class="ds-tab">Alerts</button>
+        <button class="ds-tab">Licences</button>
+      </nav>
+    </div>
+
+    <h3>Segmented control</h3>
+    <p class="ds-muted">For urgency. One tap instead of opening a dropdown — and each option shows the response
+    target it commits to, which is the cheapest brake there is on everyone declaring their fault Critical.</p>
+    <div class="sg-demo">
+      <div class="ds-seg" role="group" aria-label="Urgency">
+        <button class="ds-seg__option is-selected" aria-pressed="true">Critical<small>15 min</small></button>
+        <button class="ds-seg__option" aria-pressed="false">High<small>1 hr</small></button>
+        <button class="ds-seg__option" aria-pressed="false">Medium<small>4 hrs</small></button>
+        <button class="ds-seg__option" aria-pressed="false">Low<small>1 day</small></button>
+      </div>
+    </div>
+
+    <h3>Form fields</h3>
+    <div class="sg-demo">
+      <div class="ds-field-grid">
+        <div>
+          <label class="ds-label" for="f-cat">Category</label>
+          <select class="ds-select" id="f-cat"><option>Network</option><option>Printer</option><option>Projector</option><option>Software</option><option>Account</option></select>
+        </div>
+        <div>
+          <label class="ds-label" for="f-loc">Location</label>
+          <select class="ds-select" id="f-loc"><option>Lecture Hall 1</option><option>Admin Block</option><option>Library</option><option>ICT Lab</option></select>
+        </div>
+      </div>
+      <label class="ds-label" for="f-desc">Describe the fault</label>
+      <textarea class="ds-textarea" id="f-desc" placeholder="What happened? Include any error shown."></textarea>
+      <p class="ds-help">Up to three photos can be attached. They are compressed before saving.</p>
+
+      <label class="ds-label" for="f-bad">Serial number</label>
+      <input class="ds-input" id="f-bad" value="SN-EP-0049" aria-invalid="true" aria-describedby="f-bad-err">
+      <p class="ds-error" id="f-bad-err">That serial number is already registered.</p>
+
+      <div class="ds-check" style="margin-top:var(--ds-space-3)">
+        <input type="checkbox" id="f-fast" checked>
+        <label for="f-fast">Fast SLA clock (demo mode)</label>
+      </div>
+    </div>
+
+    <h3>Notices</h3>
+    <div class="sg-demo">
+      <div class="ds-notice ds-notice--info"><div>Role switching is for demonstration only. It is not authentication.</div></div>
+      <div class="ds-notice ds-notice--success"><div>Device details saved.</div></div>
+      <div class="ds-notice ds-notice--warn"><div>There is already an open ticket (TKT-1001) for this device.</div></div>
+      <div class="ds-notice ds-notice--error"><div>Could not save this update in browser storage.</div></div>
+    </div>
+  </section>
+
+  <!-- ================= PATTERNS ================= -->
+  <section class="sg-section" id="patterns">
+    <h2>Composed patterns</h2>
+
+    <h3>Ticket card</h3>
+    <p class="ds-muted">All three signal languages in one card, plus the left rail that repeats the SLA state for scanning a long list.</p>
+    <div class="ds-grid ds-grid--wide">
+      <article class="ds-card ds-ticket ds-ticket--breached">
+        <div class="ds-row">
+          <b class="ds-card__title">TKT-1001</b>
+          <span class="ds-chip ds-status">In Progress</span>
+          <span class="ds-priority ds-priority--critical"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">Critical</span></span>
+        </div>
+        <p>Projector shows no signal</p>
+        <div class="ds-card__meta">Lecture Hall 1 · AST-001 · Kofi · reported by Dr. Mensah</div>
+        <div class="ds-row" style="margin-top:var(--ds-space-2)">
+          <span class="ds-sla ds-sla--breached">Breached · 2h over</span>
+        </div>
+        <div class="ds-bar ds-bar--breached"><i style="width:100%"></i></div>
+        <div class="ds-actions" style="margin-top:var(--ds-space-3)">
+          <button class="ds-btn ds-btn--secondary">Set waiting</button>
+          <button class="ds-btn">Mark resolved</button>
+        </div>
+      </article>
+
+      <article class="ds-card ds-ticket ds-ticket--at-risk">
+        <div class="ds-row">
+          <b class="ds-card__title">TKT-1002</b>
+          <span class="ds-chip ds-status">Assigned</span>
+          <span class="ds-priority ds-priority--high"><span class="ds-priority__meter"><i></i><i></i><i></i><i></i></span><span class="ds-priority__label">High</span></span>
+        </div>
+        <p>Shared printer jams on every page</p>
+        <div class="ds-card__meta">Library · AST-003 · Ama · reported by Dr. Mensah</div>
+        <div class="ds-row" style="margin-top:var(--ds-space-2)">
+          <span class="ds-sla ds-sla--at-risk">Due soon · 12m left</span>
+        </div>
+        <div class="ds-bar ds-bar--at-risk"><i style="width:81%"></i></div>
+      </article>
+    </div>
+
+    <h3>Ticket timeline</h3>
+    <p class="ds-muted">The audit trail is the product — every action time-stamped and attributed. It gets a real
+    timeline rather than a plain list, because the sequence is the thing being communicated.</p>
+    <div class="sg-demo">
+      <ol class="ds-timeline">
+        <li class="ds-timeline__item ds-timeline__item--current">
+          <div class="ds-timestamp">11:02 · Kofi</div>
+          <div>Replaced the HDMI cable, testing now</div>
+        </li>
+        <li class="ds-timeline__item">
+          <div class="ds-timestamp">09:47 · Kofi</div>
+          <div>Acknowledged — on my way to the hall</div>
+        </li>
+        <li class="ds-timeline__item">
+          <div class="ds-timestamp">09:45 · System</div>
+          <div>Assigned to Kofi (skill, zone, workload)</div>
+        </li>
+        <li class="ds-timeline__item">
+          <div class="ds-timestamp">09:43 · Dr. Mensah</div>
+          <div>Ticket reported</div>
+        </li>
+      </ol>
+    </div>
+
+    <h3>Dashboard tiles</h3>
+    <div class="ds-grid">
+      <div class="ds-card"><div class="ds-kpi__label">Open tickets</div><div class="ds-kpi__value">7</div></div>
+      <div class="ds-card"><div class="ds-kpi__label">Breached</div><div class="ds-kpi__value ds-kpi__value--bad">2</div></div>
+      <div class="ds-card"><div class="ds-kpi__label">SLA compliance</div><div class="ds-kpi__value ds-kpi__value--ok">94%</div></div>
+    </div>
+
+    <h3>QR asset label sheet</h3>
+    <p class="ds-muted">A designed print surface, not an afterthought — printing labels is the asset officer's job. Dashed borders are cut lines; the tag is monospaced so 0 and O cannot be confused when someone reads it aloud over the phone.</p>
+    <div class="sg-demo">
+      <div class="ds-labels">
+        <div class="ds-label-card">
+          <div class="ds-label-card__tag">AST-001</div>
+          <div class="ds-label-card__qr" aria-hidden="true"><div style="width:84px;height:84px;background:repeating-conic-gradient(var(--ds-ink) 0% 25%, var(--ds-surface) 0% 50%) 0 0/14px 14px"></div></div>
+          <div class="ds-label-card__foot">Projector · Lecture Hall 1<br>Scan to view history</div>
+        </div>
+        <div class="ds-label-card">
+          <div class="ds-label-card__tag">AST-003</div>
+          <div class="ds-label-card__qr" aria-hidden="true"><div style="width:84px;height:84px;background:repeating-conic-gradient(var(--ds-ink) 0% 25%, var(--ds-surface) 0% 50%) 0 0/12px 12px"></div></div>
+          <div class="ds-label-card__foot">Printer · Library<br>Scan to view history</div>
+        </div>
+        <div class="ds-label-card">
+          <div class="ds-label-card__tag">AST-004</div>
+          <div class="ds-label-card__qr" aria-hidden="true"><div style="width:84px;height:84px;background:repeating-conic-gradient(var(--ds-ink) 0% 25%, var(--ds-surface) 0% 50%) 0 0/16px 16px"></div></div>
+          <div class="ds-label-card__foot">Router · Admin Block<br>Scan to view history</div>
+        </div>
+      </div>
+      <p class="ds-help">Placeholder patterns stand in for real QR codes.</p>
+    </div>
+
+    <h3>Empty state</h3>
+    <div class="sg-demo"><div class="ds-empty">No tickets match these filters.</div></div>
+
+    <h3>Figures — one hero, then stat tiles</h3>
+    <p class="ds-muted">A view leads with exactly one number. Equal tiles everywhere means no hierarchy, so the
+    eye has to read all of them to find the important one. Every figure carries a delta against a named period —
+    "3 at risk" is a fact, "up 2 vs last week" is information.</p>
+    <div class="sg-demo ds-grid ds-grid--wide">
+      <div class="ds-card ds-hero">
+        <div class="ds-kpi__label">SLA compliance · this month</div>
+        <div class="ds-hero__value">94%</div>
+        <div class="ds-kpi__delta ds-kpi__delta--good">Up <b>+6 points</b> vs last month</div>
+      </div>
+      <div class="ds-grid" style="grid-template-columns:1fr 1fr;gap:var(--ds-space-4)">
+        <div class="ds-card"><div class="ds-kpi__label">Open tickets</div><div class="ds-kpi__value">7</div><div class="ds-kpi__delta">Steady vs last week</div></div>
+        <div class="ds-card"><div class="ds-kpi__label">At risk</div><div class="ds-kpi__value">3</div><div class="ds-kpi__delta ds-kpi__delta--bad">Up <b>+2</b> vs last week</div></div>
+        <div class="ds-card"><div class="ds-kpi__label">Average resolution</div><div class="ds-kpi__value ds-kpi__value--duration">3h 20m</div><div class="ds-kpi__delta">Steady</div></div>
+        <div class="ds-card"><div class="ds-kpi__label">Breached</div><div class="ds-kpi__value ds-kpi__value--bad">2</div><div class="ds-kpi__delta ds-kpi__delta--bad">Up <b>+1</b></div></div>
+      </div>
+    </div>
+
+    <h3>Charts</h3>
+    <p class="ds-muted">Horizontal bars, one series per panel. Category names here are words, not dates, and a
+    horizontal bar gives a label room to be read instead of rotated. One series means the title already names what
+    is plotted, so there is no legend. <strong>The series colour is the accent, never the SLA colours</strong> —
+    green, amber and red are reserved for state, and a chart that borrowed red would stop "red" meaning "breached".</p>
+    <div class="sg-demo">
+      <figure class="ds-chart">
+        <figcaption class="ds-chart__title">Open work per technician</figcaption>
+        <div class="ds-chart__rows">
+          <div class="ds-chart__row ds-chart__row--lead"><span class="ds-chart__name">Kofi</span><div class="ds-chart__track"><i style="width:100%"></i></div><span class="ds-chart__value">4</span></div>
+          <div class="ds-chart__row"><span class="ds-chart__name">Ama</span><div class="ds-chart__track"><i style="width:50%"></i></div><span class="ds-chart__value">2</span></div>
+          <div class="ds-chart__row"><span class="ds-chart__name">Yaw</span><div class="ds-chart__track"><i style="width:25%"></i></div><span class="ds-chart__value">1</span></div>
+        </div>
+      </figure>
+    </div>
+
+    <h3>Data table</h3>
+    <p class="ds-muted">Bulk audit and comparison is a table task, not a card task. Tables stay tables on a phone —
+    wrap in <code>.ds-table-scroll</code> and let them scroll sideways rather than collapsing into unreadable stacks.</p>
+    <div class="sg-demo ds-table-scroll" style="padding:0">
+      <table class="ds-table">
+        <thead><tr><th>Tag</th><th>Device</th><th>Location</th><th>Warranty</th><th class="ds-table__num">Faults</th></tr></thead>
+        <tbody>
+          <tr><td><b>AST-001</b></td><td>Projector · Epson EB-X49</td><td>Lecture Hall 1</td><td class="ds-tabular">03/2027</td><td class="ds-table__num">3</td></tr>
+          <tr><td><b>AST-003</b></td><td>Printer · Canon i-SENSYS</td><td>Library</td><td><span class="ds-sla ds-sla--at-risk">11/2026</span></td><td class="ds-table__num">2</td></tr>
+          <tr><td><b>AST-004</b></td><td>Router · TP-Link Archer</td><td>Admin Block</td><td class="ds-tabular">01/2028</td><td class="ds-table__num">1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Photo slots</h3>
+    <p class="ds-muted">Three fixed slots, so FR-TKT-01's three-photo limit is expressed by the layout rather than
+    by an error message after the fact.</p>
+    <div class="sg-demo" style="max-width:300px">
+      <div class="ds-upload">
+        <div class="ds-upload__slot ds-upload__slot--filled" style="background-image:linear-gradient(135deg,#334155,#64748b)"></div>
+        <div class="ds-upload__slot">+ add</div>
+        <div class="ds-upload__slot">+ add</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESPONSIVE ================= -->
+  <section class="sg-section" id="responsive">
+    <h2>Responsive rules</h2>
+    <p class="sg-lede">Mobile-first. The requester journey is designed for a phone held one-handed in a corridor; the manager dashboard is designed for a desktop.</p>
+    <div class="sg-demo">
+      <table>
+        <thead><tr><th>Breakpoint</th><th>Width</th><th>What changes</th></tr></thead>
+        <tbody>
+          <tr><td>Base</td><td>&lt; 600px</td><td>One column. Buttons go full width when stacked. Filters collapse behind a disclosure. Dashboard charts scroll horizontally rather than shrink.</td></tr>
+          <tr><td>Tablet</td><td>≥ 600px</td><td>Card grid becomes two columns. Form fields pair up. Tabs stop scrolling.</td></tr>
+          <tr><td>Desktop</td><td>≥ 900px</td><td>Card grid becomes three columns. Ticket detail can sit beside the list.</td></tr>
+          <tr><td>Max</td><td>1120px</td><td>Content stops growing; margins absorb the rest so line length stays readable.</td></tr>
+        </tbody>
+      </table>
+      <p class="ds-help">Resize this page to see the grids above reflow.</p>
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <h2>How to use this</h2>
+    <div class="sg-demo ds-stack">
+      <p><strong>In the prototype:</strong> add <code>&lt;link rel="stylesheet" href="design-system/desktrace.css"&gt;</code> and swap the old class names for the <code>ds-</code> ones.</p>
+      <p><strong>In the React app:</strong> <code>import './design-system/desktrace.css'</code> once in <code>main.jsx</code>. Never write a raw hex value or pixel size in a component — if a token is missing, add it here instead.</p>
+      <p class="ds-muted">Owned by the UI/UX pair. Changes to this file go through a pull request like any other, so the visual language stays one thing.</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', () => {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+    btn.setAttribute('aria-pressed', String(!dark));
+    btn.textContent = dark ? 'Dark mode' : 'Light mode';
+  });
+</script>
+</body>
+</html>

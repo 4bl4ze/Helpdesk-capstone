@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeskTrace Wireframes</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body>
+<div class="wf-page">
+
+<header class="wf-masthead">
+  <h1>DeskTrace Wireframes</h1>
+  <p>CSM 399 Capstone · Group 16 · UI/UX (Obed Opoku Junior, Louis Mawulolo) · v1.0</p>
+</header>
+
+<section class="wf-screen">
+  <h2 style="margin-top:0">How to read these</h2>
+  <p style="max-width:70ch">Ten screens covering all four actors. Phone frames are 340px wide
+  (roughly a mid-range Android); desktop frames are the manager and asset-officer views.
+  <strong>Everything is greyscale on purpose.</strong> A wireframe shown in the real palette
+  gets reviewed as though it were finished — people argue about button shades and miss that
+  the form is in the wrong order. The only colour on this page is the
+  <span class="wf-pin">1</span> review markers, which are annotations, not interface.</p>
+  <p style="max-width:70ch">Each screen lists the proposal requirements it satisfies, so the
+  set can be checked against section 4.2 directly.</p>
+
+  <h3>Coverage against the five-minute demo (proposal §8)</h3>
+  <table class="wf-table">
+    <thead><tr><th>Demo step</th><th>Screens</th></tr></thead>
+    <tbody>
+      <tr><td>1 · Scan a QR label</td><td>S09 asset detail → S02 report form, pre-filled</td></tr>
+      <tr><td>2 · Report offline, show Pending</td><td>S02 → S03</td></tr>
+      <tr><td>3 · Reconnect and sync, auto-assigned</td><td>S03</td></tr>
+      <tr><td>4 · Show the simulated message</td><td>S10 notifications</td></tr>
+      <tr><td>5 · Work it, then show a breach escalating</td><td>S05 → S06 → S08</td></tr>
+      <tr><td>6 · Analyse on the dashboard</td><td>S07</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ======================= S01 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S01</div>
+    <h2 class="wf-screen__title">Role selection</h2>
+    <div class="wf-screen__who">All actors · phone and desktop · entry point</div>
+  </div>
+  <div class="wf-split">
+    <div class="wf-phone wf-anchor">
+      <div class="wf-phone__notch"><span>09:41</span><span>▮▮▮</span></div>
+      <div class="wf-appbar">DeskTrace</div>
+      <div class="wf-body">
+        <p class="wf-h">Who are you signing in as?</p>
+        <p class="wf-sub">Demo mode — no password required.</p>
+        <span class="wf-pin wf-pin--float" style="left:50%;top:188px">1</span>
+        <div class="wf-card wf-row wf-row--between"><div><b style="font-size:14px">Requester</b><div class="wf-sub">Report faults, follow your tickets</div></div><span>›</span></div>
+        <div class="wf-card wf-row wf-row--between"><div><b style="font-size:14px">Technician</b><div class="wf-sub">Work your assigned queue</div></div><span>›</span></div>
+        <div class="wf-card wf-row wf-row--between"><div><b style="font-size:14px">IT manager</b><div class="wf-sub">Reassign, set targets, read the dashboard</div></div><span>›</span></div>
+        <div class="wf-card wf-row wf-row--between"><div><b style="font-size:14px">Asset officer</b><div class="wf-sub">Maintain the device register</div></div><span>›</span></div>
+        <span class="wf-pin wf-pin--float" style="left:50%;top:470px">2</span>
+        <div class="wf-note-strip">This demo stores data in your browser. Do not enter passwords or personal information.</div>
+      </div>
+    </div>
+    <div>
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>Roles as cards, not a dropdown.</b> Four large targets instead of a 4-item select. Each carries a one-line description of what that role can do, which doubles as the examiner's cue during the demo — the person watching learns the actor model without being told.</div></li>
+        <li><span class="wf-pin">2</span><div><b>The privacy note sits on the entry screen</b>, not buried in a tab. Proposal §2.3 commits to "a short privacy note in the app"; it is only honest if it appears before anyone types anything.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-ACC-01</code>. Supports <code>FR-ACC-02</code> by establishing the active role.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= S02 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S02</div>
+    <h2 class="wf-screen__title">Report a fault</h2>
+    <div class="wf-screen__who">Requester · phone-first · <strong>the screen the project is judged on</strong></div>
+  </div>
+  <div class="wf-split">
+    <div class="wf-phone wf-phone--tall wf-anchor">
+      <div class="wf-phone__notch"><span>09:41</span><span>✈ offline</span></div>
+      <div class="wf-appbar">‹ Report a fault <span class="wf-appbar__spacer">Offline</span></div>
+      <div class="wf-body">
+        <span class="wf-pin wf-pin--float" style="left:50%;top:92px">1</span>
+        <div class="wf-note-strip wf-row wf-row--between">
+          <div><b>AST-001</b> · Projector<div class="wf-sub">Lecture Hall 1 · scanned</div></div>
+          <span class="wf-btn wf-btn--sm">Change</span>
+        </div>
+
+        <div class="wf-field wf-field--select"><span class="wf-field__label">Category</span><span class="wf-field__value">Projector</span></div>
+        <div class="wf-field wf-field--select"><span class="wf-field__label">Location</span><span class="wf-field__value">Lecture Hall 1</span></div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:272px">2</span>
+        <div>
+          <span class="wf-field__label" style="display:block;margin-bottom:4px">How urgent?</span>
+          <div class="wf-seg">
+            <span class="is-on">Critical<small>15 min</small></span>
+            <span>High<small>1 hr</small></span>
+            <span>Medium<small>4 hrs</small></span>
+            <span>Low<small>1 day</small></span>
+          </div>
+        </div>
+
+        <div class="wf-field wf-field--area"><span class="wf-field__label">What is wrong?</span><span class="wf-field__value wf-field__value--placeholder">No signal from the projector. Class starts in 10 minutes.</span></div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:448px">3</span>
+        <div>
+          <span class="wf-field__label" style="display:block;margin-bottom:4px">Photos (optional, up to 3)</span>
+          <div class="wf-grid-3">
+            <div class="wf-media" style="min-height:62px"><span>photo 1</span></div>
+            <div class="wf-media" style="min-height:62px"><span>+ add</span></div>
+            <div class="wf-media" style="min-height:62px"><span>+ add</span></div>
+          </div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:566px">4</span>
+        <div class="wf-note-strip">⚠ There is already an open ticket <b>TKT-1001</b> for this device. Send only if this is a different fault.</div>
+      </div>
+      <span class="wf-pin wf-pin--float" style="left:50%;top:636px">5</span>
+      <div class="wf-sticky">
+        <span class="wf-btn wf-btn--primary wf-btn--block">Send ticket</span>
+        <div class="wf-sub" style="text-align:center;margin-top:5px">Saved on this phone — sends when you are back online</div>
+      </div>
+    </div>
+    <div>
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>Arriving by QR pre-fills the device, category and location</b>, and says so. The requester's job shrinks to one sentence of description. If they got here from the menu instead, this strip is replaced by a normal device picker. <em>Change</em> is present because a scan can be of the wrong label.</div></li>
+        <li><span class="wf-pin">2</span><div><b>Urgency is a segmented control showing each band's response target</b>, not a dropdown. Two reasons. One tap instead of three. And — more importantly — a requester choosing "Critical" can see they are claiming a 15-minute response, which is the cheapest possible brake on urgency inflation. Every helpdesk drowns in self-declared Critical tickets; showing the promise at the point of choosing is a design answer to that.</div></li>
+        <li><span class="wf-pin">3</span><div><b>Photos are optional and visibly so.</b> Three fixed slots rather than a file list, so the three-photo limit (FR-TKT-01) is expressed by the layout instead of by an error message after the fact.</div></li>
+        <li><span class="wf-pin">4</span><div><b>The duplicate warning appears before sending, not after.</b> It warns and still lets them send — the same projector can genuinely fail twice. Phrased as a question of fact, not a scolding.</div></li>
+        <li><span class="wf-pin">5</span><div><b>Send is sticky at the bottom</b>, inside thumb reach, and states the offline consequence in plain words. "Pending sync" means nothing to a lecturer; "sends when you are back online" does.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-TKT-01</code>, <code>FR-OFF-01</code>. Supports <code>FR-AST-03</code> (pre-filled from scan) and the Could-have duplicate flag.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= S03 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S03</div>
+    <h2 class="wf-screen__title">My tickets — and the offline states</h2>
+    <div class="wf-screen__who">Requester · phone · demo steps 2 and 3</div>
+  </div>
+  <div class="wf-split">
+    <div class="wf-phone wf-phone--tall wf-anchor">
+      <div class="wf-phone__notch"><span>09:43</span><span>✈ offline</span></div>
+      <div class="wf-appbar">My tickets <span class="wf-appbar__spacer">⟳ 1 pending</span></div>
+      <div class="wf-tabs"><span class="wf-tab is-on">Tickets</span><span class="wf-tab">Devices</span><span class="wf-tab">Alerts</span></div>
+      <div class="wf-body">
+        <span class="wf-pin wf-pin--float" style="left:50%;top:110px">1</span>
+        <div class="wf-note-strip">You are offline. 1 change is saved on this phone and will send automatically.</div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:176px">2</span>
+        <div class="wf-card wf-card--rail wf-card--pending">
+          <div class="wf-row wf-row--between"><b style="font-size:13px">Not sent yet</b><span class="wf-chip">⟳ Pending</span></div>
+          <div style="font-size:13px">No signal from the projector</div>
+          <div class="wf-sub">Lecture Hall 1 · AST-001 · just now</div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:286px">3</span>
+        <div class="wf-card wf-card--rail">
+          <div class="wf-row"><b style="font-size:13px">TKT-1002</b><span class="wf-chip">Assigned</span>
+            <span class="wf-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="wf-sub">High</span></div>
+          <div style="font-size:13px">Shared printer jams on every page</div>
+          <div class="wf-sub">Library · AST-003 · Ama is assigned</div>
+          <div class="wf-row" style="margin-top:4px"><span class="wf-chip wf-chip--solid">! Due soon · 12m left</span></div>
+          <div class="wf-bar" style="margin-top:5px"><i class="hatch" style="width:81%"></i></div>
+        </div>
+
+        <div class="wf-card wf-card--rail">
+          <div class="wf-row"><b style="font-size:13px">TKT-1005</b><span class="wf-chip">Resolved</span>
+            <span class="wf-meter"><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="wf-sub">Medium</span></div>
+          <div style="font-size:13px">Image flickers</div>
+          <span class="wf-pin wf-pin--float" style="left:50%;top:512px">4</span>
+          <div class="wf-row" style="margin-top:6px">
+            <span class="wf-btn wf-btn--sm wf-btn--primary">Confirm fixed</span>
+            <span class="wf-btn wf-btn--sm">Not fixed — reopen</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>Offline is a banner, not a toast.</b> It persists while the condition persists. FR-OFF-02 asks for Offline / Syncing / Up to date — a toast that disappears cannot represent a state that lasts.</div></li>
+        <li><span class="wf-pin">2</span><div><b>An unsent ticket is dashed and has no reference number</b>, because it does not have one yet. Showing a fake reference that later changes would undermine the whole audit trail. It says "Not sent yet" where a reference would go.</div></li>
+        <li><span class="wf-pin">3</span><div><b>A sent ticket is solid, with its real reference, assignee and countdown.</b> Put side by side with the card above, the dashed-to-solid change is the entire sync story told visually — this is what the examiner sees in demo step 3.</div></li>
+        <li><span class="wf-pin">4</span><div><b>Confirm and reopen sit on the list card</b>, not behind a tap into detail. Closing the loop is the action most likely to be skipped, so it costs one tap. "Not fixed — reopen" rather than "Reopen", because the requester is reporting a fact, not operating a state machine.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-OFF-02</code>, <code>FR-ACC-02</code>, <code>FR-TKT-05</code>. Shows <code>FR-SLA-02</code> countdown in list context.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= S04 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S04</div>
+    <h2 class="wf-screen__title">Ticket detail and history</h2>
+    <div class="wf-screen__who">Requester · phone · the trust-building screen</div>
+  </div>
+  <div class="wf-split">
+    <div class="wf-phone wf-phone--tall wf-anchor">
+      <div class="wf-phone__notch"><span>11:02</span><span>▮▮▮</span></div>
+      <div class="wf-appbar">‹ TKT-1001 <span class="wf-appbar__spacer">Up to date</span></div>
+      <div class="wf-body">
+        <div class="wf-row"><span class="wf-chip wf-chip--solid">In Progress</span>
+          <span class="wf-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="wf-sub">Critical</span></div>
+        <p style="font-size:14px;margin:0">No signal from the projector. Class starts in 10 minutes.</p>
+        <div class="wf-sub">Lecture Hall 1 · AST-001 · reported 09:43</div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:214px">1</span>
+        <div class="wf-card">
+          <div class="wf-row wf-row--between"><span style="font-size:12px"><b>✕ Breached</b> · 2h over target</span></div>
+          <div class="wf-bar" style="margin-top:5px"><i class="hatch" style="width:100%"></i></div>
+          <div class="wf-sub" style="margin-top:4px">Responded in 4 min · resolution target was 4 hrs</div>
+        </div>
+
+        <div class="wf-grid-3"><div class="wf-media" style="min-height:52px"><span>photo</span></div><div></div><div></div></div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:374px">2</span>
+        <p class="wf-h">What has happened</p>
+        <div class="wf-list">
+          <div class="wf-list__item"><b>11:02 · Kofi</b><div>Replaced the HDMI cable, testing now</div></div>
+          <div class="wf-list__item"><b>09:47 · Kofi</b><div>Acknowledged — on my way to the hall</div></div>
+          <div class="wf-list__item"><b>09:45 · System</b><div>Assigned to Kofi (skill, zone, workload)</div></div>
+          <div class="wf-list__item"><b>09:43 · Dr. Mensah</b><div>Ticket reported</div></div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:588px">3</span>
+        <div class="wf-field wf-field--area"><span class="wf-field__label">Add a comment</span><span class="wf-field__value wf-field__value--placeholder">Anything else the technician should know?</span></div>
+        <span class="wf-btn wf-btn--block">Add comment</span>
+      </div>
+    </div>
+    <div>
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>The SLA block states the promise and the outcome in words</b>, with the bar as reinforcement. A requester does not know what "81%" means; "2h over target" they understand immediately. The response and resolution clocks are reported separately because they are separate commitments (FR-SLA-01).</div></li>
+        <li><span class="wf-pin">2</span><div><b>The timeline is the point of this screen.</b> It is reverse-chronological and names who did what, including the system's own assignment decision and its reason. This is what turns "I reported it and heard nothing" into a service — and it is the clearest evidence for the proposal's "evidence over opinion" principle (§6.3).</div></li>
+        <li><span class="wf-pin">3</span><div><b>Comment sits at the bottom, after the history.</b> Reading before writing: the requester sees the technician already responded before they chase it.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-TKT-02</code>, <code>FR-TKT-03</code>, <code>FR-SLA-01</code>, <code>FR-SLA-02</code>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= S05 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S05</div>
+    <h2 class="wf-screen__title">Technician queue</h2>
+    <div class="wf-screen__who">Technician · phone · "sorted by SLA deadline" (proposal §2.2)</div>
+  </div>
+  <div class="wf-split">
+    <div class="wf-phone wf-phone--tall wf-anchor">
+      <div class="wf-phone__notch"><span>09:46</span><span>▮▮▮</span></div>
+      <div class="wf-appbar">Kofi's queue <span class="wf-appbar__spacer">4 open</span></div>
+      <div class="wf-tabs"><span class="wf-tab is-on">Open (4)</span><span class="wf-tab">Waiting (1)</span><span class="wf-tab">Done</span></div>
+      <div class="wf-body">
+        <span class="wf-pin wf-pin--float" style="left:50%;top:124px">1</span>
+        <p class="wf-h" style="color:var(--wf-ink)">Overdue · 1</p>
+        <div class="wf-card wf-card--rail">
+          <div class="wf-row wf-row--between">
+            <div class="wf-row"><b style="font-size:13px">TKT-1001</b>
+              <span class="wf-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+            <span class="wf-chip wf-chip--solid">✕ 2h over</span>
+          </div>
+          <div style="font-size:13px">Projector — no signal</div>
+          <div class="wf-sub">Lecture Hall 1 · AST-001</div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:272px">2</span>
+        <p class="wf-h">Due today · 2</p>
+        <div class="wf-card wf-card--rail">
+          <div class="wf-row wf-row--between">
+            <div class="wf-row"><b style="font-size:13px">TKT-1008</b>
+              <span class="wf-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+            <span class="wf-chip">! 48m left</span>
+          </div>
+          <div style="font-size:13px">Account locked out</div>
+          <div class="wf-sub">Admin Block</div>
+        </div>
+        <div class="wf-card wf-card--rail">
+          <div class="wf-row wf-row--between">
+            <div class="wf-row"><b style="font-size:13px">TKT-1011</b>
+              <span class="wf-meter"><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
+            <span class="wf-chip">✓ 3h left</span>
+          </div>
+          <div style="font-size:13px">Projector remote not working</div>
+          <div class="wf-sub">Lecture Hall 1 · AST-001</div>
+        </div>
+      </div>
+      <span class="wf-pin wf-pin--float" style="left:50%;top:600px">3</span>
+      <div class="wf-sticky"><span class="wf-btn wf-btn--primary wf-btn--block">⬚ Scan a device label</span></div>
+    </div>
+    <div>
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>Grouped by deadline, not just sorted by it.</b> A sorted list still needs reading top to bottom to find where "late" ends. Headed groups — Overdue, Due today, Later — let a technician see their situation in one glance from across a corridor. Within each group the order is still closest-deadline-first.</div></li>
+        <li><span class="wf-pin">2</span><div><b>The countdown is the right-hand anchor on every row.</b> Same position every time, so the eye scans a single column of times rather than hunting. Priority sits beside the reference as a meter, because for a technician the deadline — not the label — decides what to do next.</div></li>
+        <li><span class="wf-pin">3</span><div><b>Scan is a permanent sticky action.</b> A technician arriving at a device scans before they do anything else; it should never be more than one tap away, from any screen in their role.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-ACC-02</code>, <code>FR-SLA-02</code>. Entry point for <code>FR-AST-03</code>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= S06 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S06</div>
+    <h2 class="wf-screen__title">Working a ticket</h2>
+    <div class="wf-screen__who">Technician · phone · where the asset register pays for itself</div>
+  </div>
+  <div class="wf-split">
+    <div class="wf-phone wf-phone--tall wf-anchor">
+      <div class="wf-phone__notch"><span>09:50</span><span>▮▮▮</span></div>
+      <div class="wf-appbar">‹ TKT-1001 <span class="wf-appbar__spacer">Critical</span></div>
+      <div class="wf-body">
+        <span class="wf-pin wf-pin--float" style="left:50%;top:106px">1</span>
+        <div class="wf-card" style="background:var(--wf-fill)">
+          <div class="wf-row wf-row--between"><b style="font-size:13px">AST-001 · Epson EB-X49</b><span class="wf-chip">In repair</span></div>
+          <div class="wf-sub">Lecture Hall 1 · warranty ends 03/2027</div>
+          <div style="font-size:12px;margin-top:5px"><b>Failed 2 times this term:</b></div>
+          <div class="wf-list" style="margin-top:3px">
+            <div class="wf-list__item">18 Oct · Lamp error on startup · <i>replaced lamp module</i></div>
+            <div class="wf-list__item">02 Oct · Image flickers · <i>reseated HDMI</i></div>
+          </div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:316px">2</span>
+        <div class="wf-card">
+          <div style="font-size:13px">No signal from the projector. Class starts in 10 minutes.</div>
+          <div class="wf-sub">Dr. Mensah · 09:43</div>
+          <div class="wf-grid-3" style="margin-top:6px"><div class="wf-media" style="min-height:46px"><span>photo</span></div><div></div><div></div></div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:452px">3</span>
+        <div class="wf-field wf-field--area"><span class="wf-field__label">Work note — what did you check or change?</span><span class="wf-field__value wf-field__value--placeholder">Replaced HDMI cable, testing now</span></div>
+        <div class="wf-field"><span class="wf-field__label">Part used (optional)</span><span class="wf-field__value wf-field__value--placeholder">HDMI cable 3m</span></div>
+      </div>
+      <span class="wf-pin wf-pin--float" style="left:50%;top:636px">4</span>
+      <div class="wf-sticky">
+        <div class="wf-row" style="flex-wrap:nowrap">
+          <span class="wf-btn" style="flex:1">Pause ⏸</span>
+          <span class="wf-btn wf-btn--primary" style="flex:2">Mark resolved</span>
+        </div>
+        <div class="wf-sub" style="text-align:center;margin-top:5px">Pausing stops the resolution clock</div>
+      </div>
+    </div>
+    <div>
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>Device history is at the top, above the fault report.</b> This is the most important ordering decision in the whole set. The proposal's own scenario (§6.4) is a technician who "sees the projector failed twice this term with the same lamp error" — that insight is worthless if it is three scrolls down. Putting repair history first is what makes the asset register useful to a technician rather than just to an auditor.</div></li>
+        <li><span class="wf-pin">2</span><div><b>The requester's own words and photo come second</b>, verbatim. Technicians distrust paraphrase; the photo often settles the diagnosis before arrival.</div></li>
+        <li><span class="wf-pin">3</span><div><b>"What did you check or change?" instead of "Notes".</b> A labelled prompt produces usable history; an empty box labelled "Notes" produces "fixed". The quality of next term's repair history is decided by the wording of this one label. <em>Part used</em> is separate so parts can be counted later.</div></li>
+        <li><span class="wf-pin">4</span><div><b>Two actions, weighted.</b> Resolve is twice the width of Pause because it is the common case. Pause states its consequence — FR-SLA-03 pauses the clock in Waiting, and a technician must understand they are stopping a measured commitment, not hiding a ticket.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-TKT-03</code>, <code>FR-SLA-03</code>, <code>FR-AST-03</code>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= S07 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S07</div>
+    <h2 class="wf-screen__title">Manager dashboard</h2>
+    <div class="wf-screen__who">IT manager · desktop-first · demo step 6</div>
+  </div>
+  <div class="wf-split wf-split--wide">
+    <div class="wf-desktop wf-anchor">
+      <div class="wf-desktop__chrome"><i class="wf-desktop__dot"></i><i class="wf-desktop__dot"></i><i class="wf-desktop__dot"></i><span class="wf-desktop__url">desktrace.app/dashboard</span></div>
+      <div class="wf-appbar">DeskTrace <span class="wf-appbar__spacer">IT Manager · Up to date</span></div>
+      <div class="wf-tabs" style="justify-content:flex-start"><span class="wf-tab is-on" style="flex:0 0 auto;padding-inline:18px">Dashboard</span><span class="wf-tab" style="flex:0 0 auto;padding-inline:18px">Tickets</span><span class="wf-tab" style="flex:0 0 auto;padding-inline:18px">Devices</span><span class="wf-tab" style="flex:0 0 auto;padding-inline:18px">Licences</span><span class="wf-tab" style="flex:0 0 auto;padding-inline:18px">Alerts</span></div>
+      <div class="wf-body">
+        <span class="wf-pin wf-pin--float" style="left:8%;top:128px">1</span>
+        <div class="wf-grid-4">
+          <div class="wf-kpi"><div class="wf-kpi__label">Open</div><div class="wf-kpi__value">7</div></div>
+          <div class="wf-kpi"><div class="wf-kpi__label">At risk</div><div class="wf-kpi__value">3</div></div>
+          <div class="wf-kpi"><div class="wf-kpi__label">Breached</div><div class="wf-kpi__value">2</div></div>
+          <div class="wf-kpi"><div class="wf-kpi__label">SLA compliance</div><div class="wf-kpi__value">94%</div></div>
+        </div>
+        <div class="wf-grid-2">
+          <div class="wf-kpi"><div class="wf-kpi__label">Average first response</div><div class="wf-kpi__value">12m</div></div>
+          <div class="wf-kpi"><div class="wf-kpi__label">Average resolution</div><div class="wf-kpi__value">3h 20m</div></div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:8%;top:300px">2</span>
+        <div class="wf-grid-3">
+          <div class="wf-chart"><div class="wf-sub"><b>By status</b></div><div class="wf-chart__bars"><i style="height:40%"></i><i style="height:70%"></i><i style="height:95%"></i><i style="height:30%"></i><i style="height:55%"></i><i style="height:25%"></i></div></div>
+          <div class="wf-chart"><div class="wf-sub"><b>By priority</b></div><div class="wf-chart__bars"><i style="height:85%"></i><i style="height:60%"></i><i style="height:45%"></i><i style="height:20%"></i></div></div>
+          <div class="wf-chart"><div class="wf-sub"><b>Open work per technician</b></div><div class="wf-chart__bars"><i style="height:90%"></i><i style="height:55%"></i><i style="height:35%"></i></div></div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:8%;top:470px">3</span>
+        <div class="wf-grid-2">
+          <div class="wf-card">
+            <div class="wf-sub"><b>Repeat faults by device</b></div>
+            <table class="wf-table" style="margin-top:6px">
+              <tr><td>AST-001 Projector · Lecture Hall 1</td><td style="width:40px;text-align:right"><b>3</b></td></tr>
+              <tr><td>AST-003 Printer · Library</td><td style="text-align:right">2</td></tr>
+              <tr><td>AST-004 Router · Admin Block</td><td style="text-align:right">1</td></tr>
+            </table>
+          </div>
+          <div class="wf-card">
+            <div class="wf-sub"><b>Repeat faults by room</b></div>
+            <table class="wf-table" style="margin-top:6px">
+              <tr><td>Lecture Hall 1</td><td style="width:40px;text-align:right"><b>4</b></td></tr>
+              <tr><td>Library</td><td style="text-align:right">2</td></tr>
+              <tr><td>Admin Block</td><td style="text-align:right">1</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:8%;top:660px">4</span>
+        <p class="wf-h">Needs you now · 2 breached, 3 at risk</p>
+        <div class="wf-card wf-card--rail">
+          <div class="wf-row wf-row--between">
+            <div class="wf-row"><b style="font-size:13px">TKT-1001</b><span class="wf-chip">Kofi</span><span>Projector — no signal</span></div>
+            <div class="wf-row"><span class="wf-chip wf-chip--solid">✕ 2h over</span><span class="wf-btn wf-btn--sm">Reassign</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:20px">
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>Four counts, then two averages.</b> The counts answer "what is happening now", the averages answer "how are we doing generally". Mixing them in one row of six makes a manager read all six to find the urgent one.</div></li>
+        <li><span class="wf-pin">2</span><div><b>Charts are deliberately small and side by side.</b> They are for spotting a shape — one technician's bar twice everyone else's — not for reading values. Anything needing an exact number is a KPI tile or a table instead.</div></li>
+        <li><span class="wf-pin">3</span><div><b>Repeat faults get tables, not charts.</b> This is the proposal's "Learn" pillar and its stated business outcome: the manager takes these rows to a budget meeting to argue for replacement. A rank with exact counts is what that argument needs; a bar chart is not quotable.</div></li>
+        <li><span class="wf-pin">4</span><div><b>The dashboard ends in actions, not figures.</b> "Needs you now" lists the breached and at-risk tickets with Reassign on the row. A dashboard that only reports leaves the manager to go hunting in another tab for the thing it just alarmed them about.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-DSH-01</code>, <code>FR-DSH-02</code>. Entry point to <code>FR-TKT-04</code>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= S08 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S08</div>
+    <h2 class="wf-screen__title">Ticket administration</h2>
+    <div class="wf-screen__who">IT manager · desktop · reassign, re-prioritise, clear the queue</div>
+  </div>
+  <div class="wf-split wf-split--wide">
+    <div class="wf-desktop wf-anchor">
+      <div class="wf-desktop__chrome"><i class="wf-desktop__dot"></i><i class="wf-desktop__dot"></i><i class="wf-desktop__dot"></i><span class="wf-desktop__url">desktrace.app/tickets</span></div>
+      <div class="wf-appbar">DeskTrace <span class="wf-appbar__spacer">IT Manager</span></div>
+      <div class="wf-body">
+        <span class="wf-pin wf-pin--float" style="left:8%;top:92px">1</span>
+        <div class="wf-row" style="flex-wrap:nowrap;gap:8px">
+          <div class="wf-field" style="flex:2"><span class="wf-field__label">Search</span><span class="wf-field__value wf-field__value--placeholder">Reference, description, device…</span></div>
+          <div class="wf-field wf-field--select" style="flex:1"><span class="wf-field__label">Status</span><span class="wf-field__value">All</span></div>
+          <div class="wf-field wf-field--select" style="flex:1"><span class="wf-field__label">Category</span><span class="wf-field__value">All</span></div>
+          <div class="wf-field wf-field--select" style="flex:1"><span class="wf-field__label">Location</span><span class="wf-field__value">All</span></div>
+          <div class="wf-field wf-field--select" style="flex:1"><span class="wf-field__label">Technician</span><span class="wf-field__value">All</span></div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:8%;top:200px">2</span>
+        <div class="wf-card" style="border-width:2px;border-color:var(--wf-ink)">
+          <div class="wf-row wf-row--between">
+            <b style="font-size:14px">Manager queue · 1 ticket has no technician</b>
+            <span class="wf-sub">No one matched its skill, zone and availability</span>
+          </div>
+          <div class="wf-card" style="margin-top:8px">
+            <div class="wf-row wf-row--between">
+              <div class="wf-row"><b style="font-size:13px">TKT-1014</b>
+                <span class="wf-meter"><i class="on"></i><i class="on"></i><i></i><i></i></span>
+                <span style="font-size:13px">Software — Excel will not open</span><span class="wf-sub">Lecture Hall 1</span></div>
+              <div class="wf-row">
+                <div class="wf-field wf-field--select" style="padding:3px 8px"><span class="wf-field__value" style="font-size:12px">Assign to…</span></div>
+                <span class="wf-btn wf-btn--sm wf-btn--primary">Assign</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:8%;top:358px">3</span>
+        <table class="wf-table">
+          <thead><tr><th>Ref</th><th>Fault</th><th>Priority</th><th>Technician</th><th>SLA</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><b>TKT-1001</b></td><td>Projector — no signal</td>
+              <td><span class="wf-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+              <td>Kofi ▾</td><td><span class="wf-chip wf-chip--solid">✕ 2h over</span></td><td>In Progress</td>
+              <td><span class="wf-btn wf-btn--sm">Open</span></td>
+            </tr>
+            <tr>
+              <td><b>TKT-1002</b></td><td>Printer jams every page</td>
+              <td><span class="wf-meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+              <td>Ama ▾</td><td><span class="wf-chip">! 12m left</span></td><td>Assigned</td>
+              <td><span class="wf-btn wf-btn--sm">Open</span></td>
+            </tr>
+            <tr>
+              <td><b>TKT-1011</b></td><td>Projector remote not working</td>
+              <td><span class="wf-meter"><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+              <td>Kofi ▾</td><td><span class="wf-chip">✓ 3h left</span></td><td>Assigned</td>
+              <td><span class="wf-btn wf-btn--sm">Open</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="margin-top:20px">
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>Filters are a single row across the top</b>, always visible on desktop. FR-TKT-04 names four filter dimensions plus search; on a manager's screen there is room to show all five without a disclosure, and a filter you cannot see is a filter nobody uses.</div></li>
+        <li><span class="wf-pin">2</span><div><b>The manager queue is a separate panel above the table, not a row inside it.</b> FR-ASG-01 says unmatched tickets land with the manager — that is the one case where the system has given up and needs a human. It states <em>why</em> nobody matched, because "no technician has this skill in this zone" and "everyone is at capacity" need different fixes. It disappears entirely when empty.</div></li>
+        <li><span class="wf-pin">3</span><div><b>Reassign is an inline dropdown in the table row.</b> Reassigning is a bulk, comparative activity — you look across the workload column and move one. Making it a detail-page action would mean opening and closing three tickets to balance two technicians. This is also the control that is currently broken in the prototype.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-TKT-04</code>, <code>FR-ASG-01</code>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= S09 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S09</div>
+    <h2 class="wf-screen__title">Asset register and device page</h2>
+    <div class="wf-screen__who">Asset officer (desktop) · anyone arriving by QR scan (phone) · demo step 1</div>
+  </div>
+  <div class="wf-split">
+    <div class="wf-phone wf-phone--tall wf-anchor">
+      <div class="wf-phone__notch"><span>09:42</span><span>▮▮▮</span></div>
+      <div class="wf-appbar">‹ AST-001</div>
+      <div class="wf-body">
+        <span class="wf-pin wf-pin--float" style="left:50%;top:96px">1</span>
+        <div class="wf-row wf-row--between">
+          <div><b style="font-size:15px">Epson EB-X49</b><div class="wf-sub">Projector · Lecture Hall 1</div></div>
+          <span class="wf-chip wf-chip--solid">In repair</span>
+        </div>
+        <div class="wf-card">
+          <div style="font-size:12px">Serial <b>SN-EP-0049</b></div>
+          <div style="font-size:12px">Custodian: ICT Dept</div>
+          <div style="font-size:12px">Warranty ends 03/2027</div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:286px">2</span>
+        <span class="wf-btn wf-btn--primary wf-btn--block">Report a fault with this device</span>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:356px">3</span>
+        <p class="wf-h">Repair history · 3 faults</p>
+        <div class="wf-list">
+          <div class="wf-list__item"><b>TKT-1001</b> · today · In Progress<div>Projector shows no signal</div></div>
+          <div class="wf-list__item"><b>TKT-1004</b> · 18 Oct · Closed<div>Lamp error on startup — replaced lamp module</div></div>
+          <div class="wf-list__item"><b>TKT-1005</b> · 02 Oct · Closed<div>Image flickers — reseated HDMI</div></div>
+        </div>
+
+        <span class="wf-pin wf-pin--float" style="left:50%;top:560px">4</span>
+        <div class="wf-note-strip wf-row" style="gap:10px"><div class="wf-qr" style="width:52px;height:52px"></div><div style="font-size:12px">This page opens from the label on the device.<br><span class="wf-sub">Works offline once loaded</span></div></div>
+      </div>
+    </div>
+    <div>
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>Identity first, then facts.</b> Someone arriving here has just scanned a sticker and needs to confirm they are looking at the right machine before anything else. Status is top-right because "In repair" changes what they do next — a second person need not report the same fault.</div></li>
+        <li><span class="wf-pin">2</span><div><b>Report a fault sits above the history, as the only filled button.</b> FR-AST-03 requires the scan to offer it. Most people scanning a label are standing in front of something broken; the history is interesting, the action is why they are here.</div></li>
+        <li><span class="wf-pin">3</span><div><b>History entries carry their resolution, not just the fault.</b> "Lamp error — replaced lamp module" lets the next technician skip a diagnosis. This is the same content as the technician's work note on S06, which is why that label matters so much.</div></li>
+        <li><span class="wf-pin">4</span><div><b>The page states that it works offline.</b> Offline capability nobody knows about buys no confidence; the demo (§8 step 2) depends on the audience believing it.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-AST-03</code>, <code>FR-AST-01</code> (register, desktop view below). Entry to <code>FR-TKT-01</code>.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px">
+    <h3 style="font-size:15px">Register — asset officer, desktop</h3>
+    <div class="wf-desktop wf-anchor">
+      <div class="wf-desktop__chrome"><i class="wf-desktop__dot"></i><i class="wf-desktop__dot"></i><i class="wf-desktop__dot"></i><span class="wf-desktop__url">desktrace.app/devices</span></div>
+      <div class="wf-body">
+        <div class="wf-row wf-row--between">
+          <div class="wf-field" style="flex:1;max-width:320px"><span class="wf-field__label">Search devices</span><span class="wf-field__value wf-field__value--placeholder">Tag, serial, model, room…</span></div>
+          <div class="wf-row"><span class="wf-btn">Print all labels</span><span class="wf-btn wf-btn--primary">+ Add device</span></div>
+        </div>
+        <span class="wf-pin wf-pin--float" style="left:8%;top:186px">5</span>
+        <table class="wf-table">
+          <thead><tr><th>Tag</th><th>Type / model</th><th>Serial</th><th>Location</th><th>Custodian</th><th>Warranty</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><b>AST-001</b></td><td>Projector · Epson EB-X49</td><td>SN-EP-0049</td><td>Lecture Hall 1</td><td>ICT Dept</td><td>03/2027</td><td><span class="wf-chip wf-chip--solid">In repair</span></td><td><span class="wf-btn wf-btn--sm">Label</span></td></tr>
+            <tr><td><b>AST-003</b></td><td>Printer · Canon i-SENSYS</td><td>SN-CN-0203</td><td>Library</td><td>Library Office</td><td><b>11/2026</b></td><td><span class="wf-chip">In use</span></td><td><span class="wf-btn wf-btn--sm">Label</span></td></tr>
+            <tr><td><b>AST-004</b></td><td>Router · TP-Link Archer</td><td>SN-TP-0081</td><td>Admin Block</td><td>Admin Office</td><td>01/2028</td><td><span class="wf-chip">In use</span></td><td><span class="wf-btn wf-btn--sm">Label</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <ol class="wf-notes" style="margin-top:14px">
+      <li><span class="wf-pin">5</span><div><b>One row per device, every FR-AST-01 field visible without opening anything.</b> The asset officer's job is bulk data entry and audit, which is a table task, not a card task. Warranty dates inside 60 days are emphasised in place — the same expiry logic as the licence tracker, applied where someone can act on it.</div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ======================= S10 ======================= -->
+<section class="wf-screen">
+  <div class="wf-screen__head">
+    <div class="wf-screen__id">S10</div>
+    <h2 class="wf-screen__title">QR label sheet, and notifications</h2>
+    <div class="wf-screen__who">Asset officer (print) · all roles (alerts) · demo steps 1 and 4</div>
+  </div>
+  <div class="wf-split">
+    <div class="wf-phone wf-anchor">
+      <div class="wf-phone__notch"><span>09:45</span><span>▮▮▮</span></div>
+      <div class="wf-appbar">Alerts <span class="wf-appbar__spacer">2 new</span></div>
+      <div class="wf-body">
+        <span class="wf-pin wf-pin--float" style="left:50%;top:104px">1</span>
+        <div class="wf-note-strip">Simulated messages. No SMS or WhatsApp provider is connected — see proposal §2.3.</div>
+        <div class="wf-card">
+          <div class="wf-row wf-row--between"><span class="wf-sub">09:45 · to Dr. Mensah</span><span class="wf-chip wf-chip--solid">New</span></div>
+          <div style="font-size:13px">TKT-1001 received. Kofi will handle it.</div>
+        </div>
+        <div class="wf-card">
+          <div class="wf-row wf-row--between"><span class="wf-sub">09:45 · to Kofi</span><span class="wf-chip wf-chip--solid">New</span></div>
+          <div style="font-size:13px">TKT-1001 assigned to you (Critical, Lecture Hall 1).</div>
+        </div>
+        <div class="wf-card">
+          <div class="wf-row wf-row--between"><span class="wf-sub">11:45 · to IT Manager</span></div>
+          <div style="font-size:13px">TKT-1001 has breached its resolution SLA.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <ol class="wf-notes">
+        <li><span class="wf-pin">1</span><div><b>The panel says it is simulated, on the panel.</b> The proposal is explicit that messaging is simulated to avoid cost and approval; a demo that implies real SMS was sent is the kind of thing an examiner asks about. Saying so turns a limitation into a stated scope decision. Each message names its recipient, so one screen can demonstrate what all three actors received.</div></li>
+      </ol>
+      <div class="wf-trace">Satisfies <code>FR-NTF-01</code>.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px">
+    <h3 style="font-size:15px">Printable label sheet — A4, three across</h3>
+    <div class="wf-split">
+      <div class="wf-desktop wf-anchor" style="max-width:420px">
+        <div class="wf-body">
+          <span class="wf-pin wf-pin--float" style="left:50%;top:40px">2</span>
+          <div class="wf-grid-3">
+            <div style="border:1px dashed var(--wf-line-strong);border-radius:6px;padding:8px;text-align:center">
+              <div style="font-family:var(--wf-mono);font-weight:700;font-size:14px">AST-001</div>
+              <div class="wf-qr" style="margin:6px auto"></div>
+              <div style="font-size:9px">Projector · Lecture Hall 1<br>Scan to view history</div>
+            </div>
+            <div style="border:1px dashed var(--wf-line-strong);border-radius:6px;padding:8px;text-align:center">
+              <div style="font-family:var(--wf-mono);font-weight:700;font-size:14px">AST-003</div>
+              <div class="wf-qr" style="margin:6px auto"></div>
+              <div style="font-size:9px">Printer · Library<br>Scan to view history</div>
+            </div>
+            <div style="border:1px dashed var(--wf-line-strong);border-radius:6px;padding:8px;text-align:center">
+              <div style="font-family:var(--wf-mono);font-weight:700;font-size:14px">AST-004</div>
+              <div class="wf-qr" style="margin:6px auto"></div>
+              <div style="font-size:9px">Router · Admin Block<br>Scan to view history</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <ol class="wf-notes">
+          <li><span class="wf-pin">2</span><div><b>Dashed borders are cut lines; the tag is monospaced.</b> A tag read aloud over the phone — "A-S-T-zero-zero-one" — must not confuse 0 with O, which a proportional font invites. Each label repeats the device type and room in print, so a label that falls off is still identifiable, and carries the instruction "Scan to view history" so a passer-by knows what the code is for.</div></li>
+        </ol>
+        <div class="wf-trace">Satisfies <code>FR-AST-02</code>.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wf-screen">
+  <h2 style="margin-top:0">What is not wireframed, and why</h2>
+  <ul style="max-width:72ch">
+    <li><b>Licence tracker.</b> A Should-have (FR-LIC-01) and a plain table — it reuses the asset register layout in S09 with three columns. No new thinking needed.</li>
+    <li><b>Settings / SLA target editing.</b> The proposal lets the manager set targets, but §4.3 says the values are illustrative and tuned by agreement. A seeded config screen is not worth the build time before the core flows are solid.</li>
+    <li><b>Live camera scanning view.</b> It is a viewfinder with a frame overlay; the design question is what happens <em>after</em> the scan, which is S09.</li>
+  </ul>
+  <h3>Next for the UI/UX pair</h3>
+  <ol style="max-width:72ch">
+    <li>Walk these with the frontend leads before they build — ordering decisions like device-history-first (S06) are cheap now and expensive later.</li>
+    <li>Rebuild the approved screens with <code>../design-system/desktrace.css</code>, replacing greyscale with the real tokens.</li>
+    <li>Use S02 and S05 in the usability test (proposal §7.2) — they carry the "fault reported in under a minute" measure.</li>
+  </ol>
+</section>
+
+</div>
+</body>
+</html>

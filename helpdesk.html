@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12263f">
+<title>DeskTrace | Campus IT Helpdesk</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{color-scheme:light dark;--bg:#f2f5f8;--card:#fff;--ink:#14263b;--mute:#566a80;--pri:#0f6e8c;--line:#d5dfe9;--chip:#e6eef5;--ok:#17814a;--warn:#a55d00;--bad:#bd2929;--shadow:0 2px 8px #18344b12}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1a28;--card:#16263a;--ink:#e5edf6;--mute:#a9bbce;--pri:#5cc0dd;--line:#29415b;--chip:#203750;--ok:#55cf86;--warn:#ffc05a;--bad:#ff8585;--shadow:0 2px 8px #0003}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 "Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}
+header{background:#12263f;color:#fff;padding:11px max(16px,calc((100% - 1120px)/2));display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+header h1{font-size:20px;margin:0 auto 0 0}header label{font-size:13px;display:flex;gap:5px;align-items:center}header select{width:auto;min-width:115px;background:#223d5c;color:#fff;border-color:#466281}
+nav{display:flex;gap:4px;padding:8px max(16px,calc((100% - 1120px)/2)) 0;overflow-x:auto;border-bottom:1px solid var(--line)}
+nav button{border:0;background:none;color:var(--mute);padding:8px 14px;font:inherit;border-bottom:3px solid transparent;white-space:nowrap}nav button.on{color:var(--pri);border-color:var(--pri);font-weight:650}
+main{max-width:1120px;margin:0 auto;padding:16px 16px 48px}.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:14px;box-shadow:var(--shadow);min-width:0}.card h3{margin:0;font-size:16px}
+h2{font-size:18px;margin:21px 0 9px}.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.between{justify-content:space-between}.mute{color:var(--mute);font-size:13px}.small{font-size:12px}
+input,select,textarea{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}input[type=checkbox],input[type=radio]{width:auto}
+label.f{display:block;font-size:13px;color:var(--mute);margin:9px 0 3px}.btn{font:inherit;background:var(--pri);color:#fff;border:0;border-radius:6px;padding:7px 12px}.btn.alt{background:var(--chip);color:var(--ink)}.btn.danger{background:var(--bad);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.pill{font-size:12px;padding:2px 9px;border-radius:99px;background:var(--chip);white-space:nowrap}.sync{background:#223d5c;color:#fff}.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.bar{height:8px;border-radius:5px;background:var(--chip);overflow:hidden;margin-top:5px}.bar i{display:block;height:100%;background:var(--pri)}.kpi{font-size:27px;font-weight:700;line-height:1.15}.field-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0 10px}
+.filters{padding:10px;background:var(--card);border:1px solid var(--line);border-radius:8px;margin:10px 0}.ticket-card{border-left:4px solid var(--pri)}.ticket-card.at-risk{border-left-color:var(--warn)}.ticket-card.breached{border-left-color:var(--bad)}
+.history{border-top:1px solid var(--line);margin-top:10px;padding-top:8px}.history-item{padding:4px 0;border-bottom:1px dashed var(--line)}.photo{max-width:100%;max-height:180px;border-radius:6px;margin:5px}.qr{margin:8px 0;min-height:96px}.notice{padding:10px 12px;border:1px solid var(--line);border-radius:7px;background:var(--chip);margin:10px 0}.error{color:var(--bad);margin-top:6px}.hide{display:none!important}.stack-note{font-size:12px;color:var(--mute);padding:8px 16px;max-width:1120px;margin:auto}.badge-new{font-size:11px;color:var(--bad);font-weight:700}.form-actions{margin-top:10px}.empty{padding:16px;color:var(--mute);text-align:center}
+@media(max-width:600px){header{padding:10px 12px}header h1{width:100%}main{padding:12px}.grid{grid-template-columns:1fr}nav{padding-left:8px}.row .btn{flex:1 1 auto}}
+@media print{body{background:#fff;color:#000}header,nav,.stack-note,.no-print,.filters,.btn{display:none!important}main{max-width:none;padding:0}.card{box-shadow:none;break-inside:avoid}.qr{min-height:0}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="stack-note">Single-file demo: data is stored in this browser. React/Vite, a Workbox service worker, Dexie, and a JSON Server need separate project files and are not represented as installed here.</div>
+<script>
+'use strict';
+const ME='Dr. Mensah', now=()=>Date.now();
+const SLA={Critical:[15,240],High:[60,480],Medium:[240,4320],Low:[1440,7200]};
+const CATS={Network:['Kofi','Yaw'],Printer:['Ama','Yaw'],Projector:['Kofi'],Software:['Ama'],Account:['Ama','Kofi']};
+const TECHS={
+ Kofi:{zone:'A',skills:['Network','Projector','Software','Account'],max:5},
+ Ama:{zone:'B',skills:['Printer','Software','Account'],max:5},
+ Yaw:{zone:'B',skills:['Network','Printer'],max:5}
+};
+const LOCS={'Lecture Hall 1':'A','Admin Block':'A',Library:'B','ICT Lab':'B'};
+const STATUS=['New','Assigned','In Progress','Waiting','Resolved','Closed'];
+const USERS=[
+ {name:'Dr. Mensah',role:'Requester',department:'Academic Affairs'},
+ {name:'Kofi',role:'Technician',department:'ICT'},
+ {name:'Ama',role:'Technician',department:'ICT'},
+ {name:'Yaw',role:'Technician',department:'ICT'},
+ {name:'IT Manager',role:'Manager',department:'ICT'},
+ {name:'Asset Officer',role:'Asset Officer',department:'ICT'}
+];
+const SEED_ASSETS=[
+ ['AST-001','Projector','Epson EB-X49','SN-EP-0049','Lecture Hall 1','ICT Dept','2027-03','In use'],
+ ['AST-002','Desktop PC','HP ProDesk 400','SN-HP-0400','ICT Lab','ICT Lab','2026-12','In use'],
+ ['AST-003','Printer','Canon i-SENSYS','SN-CN-0203','Library','Library Office','2026-11','In use'],
+ ['AST-004','Router','TP-Link Archer','SN-TP-0081','Admin Block','Admin Office','2028-01','In use'],
+ ['AST-005','Laptop','Dell Latitude 5420','SN-DE-0542','Admin Block','Registrar','2027-08','In use']
+].map(a=>({id:a[0],type:a[1],model:a[2],serial:a[3],loc:a[4],cust:a[5],war:a[6],status:a[7]}));
+const KEY='desktrace-single-file-v2';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const paused=t=>(t.pausedMs||0)+(t.pauseAt?now()-t.pauseAt:0);
+const closed=t=>t.status==='Resolved'||t.status==='Closed';
+const minutes=ms=>ms*(S.fast?60:1)/60000;
+const fmt=m=>{m=Math.max(0,Math.round(m));return m<1?'under 1m':m<60?m+'m':m<2880?Math.floor(m/60)+'h '+m%60+'m':Math.round(m/1440)+'d'};
+const colorClass=p=>p>=1?'bad':p>=.75?'warn':'ok';
+const S={
+ role:'Requester',user:ME,tech:'Kofi',tab:'Tickets',online:navigator.onLine,fast:true,queue:[],
+ tickets:[],assets:SEED_ASSETS,licenses:[
+  {id:'LIC-001',software:'Microsoft 365',seats:120,expiry:'2026-12-15'},
+  {id:'LIC-002',software:'Antivirus Suite',seats:45,expiry:'2027-08-01'}
+ ],messages:[],filters:{q:'',status:'',cat:'',loc:'',tech:'',priority:''},assetOpen:null,
+ err:'',storageErr:'',photoFiles:[],form:{cat:'Network',loc:'Lecture Hall 1',pri:'Medium',asset:'',desc:''},lastBreachCheck:0
+};
+function addEvent(t,type,note,extra={}){t.history=t.history||[];t.history.unshift({at:now(),by:S.user,type,note,...extra})}
+function notify(text,to='Manager',ticketId=null){
+ const message={id:crypto.randomUUID?.()||String(now())+Math.random(),at:now(),to,text,ticketId,read:false};
+ S.messages.unshift(message);
+}
+function persist(){
+ try{
+  localStorage.setItem(KEY,JSON.stringify({role:S.role,user:S.user,tech:S.tech,fast:S.fast,tickets:S.tickets,assets:S.assets,licenses:S.licenses,messages:S.messages,queue:S.queue}));
+  S.storageErr='';
+ }catch(e){S.storageErr='Could not save this update in browser storage: '+e.message}
+}
+function load(){
+ try{
+  const raw=localStorage.getItem(KEY);
+  if(raw){const saved=JSON.parse(raw);Object.assign(S,saved);S.online=navigator.onLine;S.filters={q:'',status:'',cat:'',loc:'',tech:'',priority:''};S.form={cat:'Network',loc:'Lecture Hall 1',pri:'Medium',asset:'',desc:''};S.photoFiles=[];return}
+ }catch(e){S.storageErr='Saved data could not be read: '+e.message}
+ seed();
+}
+function makeTicket(data){
+ const id=crypto.randomUUID?.()||'local-'+now()+'-'+Math.random().toString(36).slice(2,8);
+ const t={id,ref:'LOCAL-'+id.slice(-6).toUpperCase(),by:S.user,requesterDept:USERS.find(u=>u.name===S.user)?.department||'',status:'New',at:now(),priority:data.priority,cat:data.cat,loc:data.loc,asset:data.asset||'',desc:data.desc,assignee:null,respAt:null,doneAt:null,pausedMs:0,pauseAt:null,photos:data.photos||[],history:[],rating:null,pending:!S.online};
+ addEvent(t,'Created','Ticket reported');
+ S.tickets.unshift(t);
+ if(!S.online)S.queue.push({id:'create-'+id,ticketId:id,kind:'create',at:now()});
+ else assign(t);
+ const same=S.tickets.find(x=>x.id!==t.id&&x.asset&&x.asset===t.asset&&!closed(x));
+ if(same){t.duplicateOf=same.id;addEvent(t,'Possible duplicate',`This may duplicate open ticket ${same.ref}`);notify(`${t.ref} may duplicate open ticket ${same.ref} on ${t.asset}.`,S.user,t.id)}
+ return t;
+}
+function seed(){
+ const stamp=now();
+ const seeds=[
+  {cat:'Projector',loc:'Lecture Hall 1',priority:'Critical',asset:'AST-001',desc:'Projector shows no signal',assignee:'Kofi',status:'In Progress',at:stamp-18e4,respAt:stamp-12e4},
+  {cat:'Printer',loc:'Library',priority:'High',asset:'AST-003',desc:'Shared printer jams on every page',assignee:'Ama',status:'Assigned',at:stamp-6e4},
+  {cat:'Network',loc:'Admin Block',priority:'Medium',asset:'AST-004',desc:'Wi-Fi drops every few minutes',assignee:'Yaw',status:'Waiting',at:stamp-9e4,respAt:stamp-8e4,pauseAt:stamp-3e4},
+  {cat:'Projector',loc:'Lecture Hall 1',priority:'High',asset:'AST-001',desc:'Lamp error on startup',assignee:'Kofi',status:'Closed',at:stamp-9e5,respAt:stamp-89e4,doneAt:stamp-88e4},
+  {cat:'Projector',loc:'Lecture Hall 1',priority:'Medium',asset:'AST-001',desc:'Image flickers',assignee:'Kofi',status:'Resolved',at:stamp-6e5,respAt:stamp-59e4,doneAt:stamp-57e4}
+ ];
+ S.tickets=seeds.map((x,i)=>({id:'seed-'+(i+1),ref:'TKT-'+(1001+i),by:ME,requesterDept:'Academic Affairs',priority:x.priority,cat:x.cat,loc:x.loc,asset:x.asset,desc:x.desc,assignee:x.assignee,status:x.status,at:x.at,respAt:x.respAt||null,doneAt:x.doneAt||null,pausedMs:0,pauseAt:x.pauseAt||null,photos:[],history:[{at:x.at,by:ME,type:'Created',note:'Ticket reported'}],rating:null,pending:false,breaches:[]}));
+ persist();
+}
+function sla(t){
+ const [rt,xt]=SLA[t.priority]||SLA.Medium,n=now(),responseEnd=t.respAt||((closed(t))?t.doneAt:n);
+ const re=minutes(responseEnd-t.at);
+ const resolutionEnd=t.doneAt||n,xe=minutes(Math.max(0,resolutionEnd-t.at-paused(t)));
+ return{re,xe,rt,xt,rp:re/rt,xp:xe/xt};
+}
+function breach(t){const x=sla(t);return x.re>x.rt||x.xe>x.xt}
+function slaMarkup(t){
+ if(t.pending)return'<span class="warn">Saved on this device; waiting to sync</span>';
+ const x=sla(t),response=t.respAt?`First response: ${esc(fmt(x.re))}`:`Respond within ${esc(fmt(x.rt-x.re))}${x.rp>=1?' (overdue)':''}`;
+ const resolution=closed(t)?`Resolution: ${x.xp>1?'<span class="bad">SLA missed</span>':'<span class="ok">SLA met</span>'}`:`Resolve within ${esc(fmt(x.xt-x.xe))}${x.xp>=1?' (breached)':''}`;
+ return`${response}; ${resolution}${t.status==='Waiting'?' · timer paused':''}<div class="bar"><i style="width:${Math.min(100,x.xp*100)}%;background:var(--${colorClass(x.xp)==='ok'?'pri':colorClass(x.xp)})"></i></div>`;
+}
+function assign(t){
+ const candidates=(CATS[t.cat]||[]).filter(n=>TECHS[n]&&TECHS[n].skills.includes(t.cat)&&TECHS[n].zone=== (LOCS[t.loc]||'')&&S.tickets.filter(x=>x.assignee===n&&!closed(x)).length<TECHS[n].max);
+ const previous=S.tickets.find(x=>x.id!==t.id&&x.asset&&x.asset===t.asset&&x.assignee);
+ candidates.sort((a,b)=>S.tickets.filter(x=>x.assignee===a&&!closed(x)).length-S.tickets.filter(x=>x.assignee===b&&!closed(x)).length||(a===previous?.assignee?1:0)-(b===previous?.assignee?1:0));
+ if(!candidates.length){t.status='New';t.assignee=null;addEvent(t,'Queued','No matching available technician; sent to manager queue');notify(`${t.ref} needs assignment: no technician matches its skill, zone and availability.`,'Manager',t.id);notify(`${t.ref} is waiting for a manager to assign a technician.`,t.by,t.id);return}
+ t.assignee=candidates[0];t.status='Assigned';addEvent(t,'Assigned',`Assigned to ${t.assignee}`);notify(`${t.ref} assigned to ${t.assignee} (${t.priority}, ${t.loc}).`,t.assignee,t.id);notify(`${t.ref} received; ${t.assignee} will handle it.` ,t.by,t.id);
+}
+function queueAction(t,kind){
+ if(!S.online){t.pending=true;S.queue.push({id:kind+'-'+t.id+'-'+now(),ticketId:t.id,kind,at:now()})}
+}
+function setStatus(t,status){
+ if(!t||!STATUS.includes(status))return;
+ const old=t.status,n=now();
+ if(old==='Waiting'&&status!=='Waiting'&&t.pauseAt){t.pausedMs=(t.pausedMs||0)+n-t.pauseAt;t.pauseAt=null}
+ if(status==='Waiting'&&old!=='Waiting')t.pauseAt=n;
+ if(status==='In Progress'&&!t.respAt)t.respAt=n;
+ if(status==='Resolved')t.doneAt=n;
+ if(status==='In Progress'&&old==='Resolved')t.doneAt=null;
+ t.status=status;addEvent(t,'Status',`${old} → ${status}`,{oldStatus:old,newStatus:status});queueAction(t,'status');
+ notify(`${t.ref} is now ${status}.`,t.by,t.id);persist();render();
+}
+function relativeTime(time){return new Date(time).toLocaleString()}
+function dueClass(t){if(closed(t)||t.pending)return'';const x=sla(t);return x.rp>=1||x.xp>=1?'breached':x.rp>=.75||x.xp>=.75?'at-risk':''}
+function permittedTickets(){
+ let rows=S.tickets;
+ if(S.role==='Requester')rows=rows.filter(t=>t.by===S.user);
+ if(S.role==='Technician')rows=rows.filter(t=>t.assignee===S.tech);
+ const f=S.filters,q=f.q.trim().toLowerCase();
+ rows=rows.filter(t=>(!q||[t.ref,t.desc,t.asset,t.by,t.assignee,t.loc].some(v=>String(v||'').toLowerCase().includes(q)))&&(!f.status||t.status===f.status)&&(!f.cat||t.cat===f.cat)&&(!f.loc||t.loc===f.loc)&&(!f.tech||t.assignee===f.tech)&&(!f.priority||t.priority===f.priority));
+ if(S.role==='Technician')rows.sort((a,b)=>closed(a)-closed(b)||(sla(a).xt-sla(a).xe)-(sla(b).xt-sla(b).xe));
+ return rows;
+}
+function ticketCard(t){
+ const own=t.by===S.user,actions=[];
+ if(S.role==='Technician'&&t.assignee===S.tech&&!closed(t)){
+  if(t.status!=='In Progress')actions.push(`<button class="btn alt" data-a="status" data-id="${esc(t.id)}" data-v="In Progress">${t.respAt?'Resume work':'Acknowledge / start'}</button>`);
+  if(t.status!=='Waiting')actions.push(`<button class="btn alt" data-a="status" data-id="${esc(t.id)}" data-v="Waiting">Set waiting</button>`);
+  if(t.status!=='Resolved')actions.push(`<button class="btn" data-a="status" data-id="${esc(t.id)}" data-v="Resolved">Mark resolved</button>`);
+ }
+ if(S.role==='Requester'&&own&&t.status==='Resolved')actions.push(`<button class="btn" data-a="status" data-id="${esc(t.id)}" data-v="Closed">Confirm fixed</button><button class="btn alt" data-a="status" data-id="${esc(t.id)}" data-v="In Progress">Reopen</button>`);
+ const manager=S.role==='Manager';
+ const adminControls=manager&&!closed(t)&&!t.pending?`<div class="field-grid"><label class="f">Reassign<select data-c="reassign" data-id="${esc(t.id)}"><option value="">Unassigned / manager queue</option>${Object.keys(TECHS).map(n=>`<option value="${esc(n)}" ${t.assignee===n?'selected':''}>${esc(n)}</option>`).join('')}</select></label><label class="f">Priority<select data-c="priority" data-id="${esc(t.id)}">${Object.keys(SLA).map(n=>`<option ${t.priority===n?'selected':''}>${n}</option>`).join('')}</select></label></div>`:'';
+ const history=(t.history||[]).map(h=>`<div class="history-item"><span class="mute">${esc(relativeTime(h.at))} · ${esc(h.by)} · ${esc(h.type)}</span><div>${esc(h.note)}</div></div>`).join('');
+ const photos=(t.photos||[]).map((p,i)=>`<a href="${esc(p)}" target="_blank" rel="noopener" aria-label="Open attachment ${i+1}"><img class="photo" src="${esc(p)}" alt="Ticket attachment ${i+1}"></a>`).join('');
+ const canComment=S.role==='Manager'||S.role==='Technician'||own;
+ const comment=canComment?`<label class="f">Add a comment or work note<textarea rows="2" data-comment="${esc(t.id)}" placeholder="Record what was checked, changed or communicated"></textarea></label><button class="btn alt" data-a="comment" data-id="${esc(t.id)}">Add note</button>`:'';
+ const rate=own&&t.status==='Resolved'?`${t.rating?`<p class="mute">Saved rating: ${t.rating}/5</p>`:''}<label class="f">Rate the service<select data-rating="${esc(t.id)}"><option value="">Choose 1–5</option>${[1,2,3,4,5].map(n=>`<option value="${n}" ${t.rating===n?'selected':''}>${n} / 5</option>`).join('')}</select></label><button class="btn alt" data-a="rate" data-id="${esc(t.id)}">${t.rating?'Update rating':'Save rating'}</button>`:t.rating?`<span class="pill">Requester rating: ${t.rating}/5</span>`:'';
+ return`<article class="card ticket-card ${dueClass(t)}" data-ticket="${esc(t.id)}"><div class="row"><b>${esc(t.ref)}</b><span class="pill">${esc(t.pending?'Pending sync':t.status)}</span><span class="pill">${esc(t.priority)}</span><span class="pill">${esc(t.cat)}</span>${S.role==='Manager'&&t.status==='New'?'<span class="badge-new">MANAGER QUEUE</span>':''}${t.duplicateOf?`<span class="pill warn">Possible duplicate of ${esc(S.tickets.find(x=>x.id===t.duplicateOf)?.ref||'another ticket')}</span>`:''}</div>
+ <p>${esc(t.desc)}</p><div class="mute">${esc(t.loc)}${t.asset?', '+esc(t.asset):''} · ${esc(t.assignee||'Unassigned')} · reported by ${esc(t.by)} · ${esc(relativeTime(t.at))}</div>
+ <div class="mute" data-sla="${esc(t.id)}">${slaMarkup(t)}</div>${photos?`<div>${photos}</div>`:''}${actions.length||adminControls?`<div class="row no-print" style="margin-top:8px">${actions.join('')}</div>${adminControls}`:''}
+ <details class="history"><summary>Ticket history, comments${t.history?.length?` (${t.history.length})`:''}</summary><div>${history||'<p class="mute">No updates yet.</p>'}${comment}${rate}</div></details></article>`;
+}
+function formMarkup(){
+ if(S.role!=='Requester')return'';
+ const F=S.form,duplicate=F.asset&&S.tickets.find(t=>t.asset===F.asset&&!closed(t));
+ return`<form class="card" id="ticketForm"><b>Report a fault</b><div class="field-grid">
+ <label class="f">Category<select name="cat">${Object.keys(CATS).map(x=>`<option ${F.cat===x?'selected':''}>${x}</option>`).join('')}</select></label>
+ <label class="f">Location<select name="loc">${Object.keys(LOCS).map(x=>`<option ${F.loc===x?'selected':''}>${esc(x)}</option>`).join('')}</select></label>
+ <label class="f">Urgency<select name="priority">${Object.keys(SLA).map(x=>`<option ${F.pri===x?'selected':''}>${x}</option>`).join('')}</select></label>
+ <label class="f">Device (optional)<select name="asset"><option value="">None</option>${S.assets.map(a=>`<option value="${esc(a.id)}" ${F.asset===a.id?'selected':''}>${esc(a.id)} ${esc(a.type)} · ${esc(a.loc)}</option>`).join('')}</select></label></div>
+ <label class="f">Describe the fault<textarea name="desc" rows="3" maxlength="1200" required placeholder="What happened? Include any error shown.">${esc(F.desc)}</textarea></label>
+ <label class="f">Photos (up to 3; compressed before saving)<input name="photos" type="file" accept="image/*" capture="environment" multiple></label><div class="mute" id="photoCount">${S.photoFiles.length} photo(s) selected</div>
+ ${duplicate?`<div class="notice warn">There is already an open ticket (${esc(duplicate.ref)}) for this device. Submit only if this is a separate fault.</div>`:''}
+ ${S.err?`<div class="error" role="alert">${esc(S.err)}</div>`:''}<div class="form-actions"><button class="btn" type="submit">Send ticket</button></div></form>`;
+}
+function ticketView(){
+ let rows=permittedTickets();
+ if(S.role==='Technician')rows=rows.filter(t=>t.assignee===S.tech);
+ return`<div class="grid">${formMarkup()}</div><h2>${S.role==='Requester'?'My tickets':S.role==='Technician'?`${esc(S.tech)}’s queue · closest deadline first`:'Tickets'}</h2>
+ <div class="filters no-print"><div class="field-grid"><label class="f">Search<input data-filter="q" value="${esc(S.filters.q)}" placeholder="Reference, description, device…"></label>
+ <label class="f">Status<select data-filter="status"><option value="">All statuses</option>${STATUS.map(x=>`<option ${S.filters.status===x?'selected':''}>${x}</option>`).join('')}</select></label>
+ <label class="f">Category<select data-filter="cat"><option value="">All categories</option>${Object.keys(CATS).map(x=>`<option ${S.filters.cat===x?'selected':''}>${x}</option>`).join('')}</select></label>
+ <label class="f">Location<select data-filter="loc"><option value="">All locations</option>${Object.keys(LOCS).map(x=>`<option ${S.filters.loc===x?'selected':''}>${esc(x)}</option>`).join('')}</select></label>
+ <label class="f">Priority<select data-filter="priority"><option value="">All priorities</option>${Object.keys(SLA).map(x=>`<option ${S.filters.priority===x?'selected':''}>${x}</option>`).join('')}</select></label>
+ ${S.role!=='Requester'?`<label class="f">Technician<select data-filter="tech"><option value="">All technicians</option>${Object.keys(TECHS).map(x=>`<option ${S.filters.tech===x?'selected':''}>${x}</option>`).join('')}</select></label>`:''}</div></div>
+ <div class="grid" id="ticketList">${rows.map(ticketCard).join('')||'<div class="empty">No tickets match these filters.</div>'}</div>`;
+}
+function assetHistory(a){return S.tickets.filter(t=>t.asset===a.id).sort((x,y)=>y.at-x.at)}
+function assetStatus(a){return S.tickets.some(t=>t.asset===a.id&&!closed(t))?'In repair':a.status}
+function assetForm(){
+ return`<details class="card"><summary><b>Add a device to the register</b></summary><form id="assetForm" class="field-grid">
+ ${[['type','Device type'],['model','Model'],['serial','Serial number'],['loc','Location'],['cust','Custodian / department'],['war','Warranty end (YYYY-MM)']].map(([n,l])=>`<label class="f">${l}<input name="${n}" ${n==='war'?'placeholder="2027-06"':''} required></label>`).join('')}
+ <div class="form-actions"><button class="btn" type="submit">Add device</button></div></form></details>`;
+}
+function assetsView(){
+ if(S.assetOpen){const a=S.assets.find(x=>x.id===S.assetOpen);if(!a){S.assetOpen=null;return assetsView()}
+  const history=assetHistory(a);
+  return`<div class="card"><div class="row between"><div><h2 style="margin:0">${esc(a.id)} · ${esc(a.type)}</h2><span class="pill">${esc(assetStatus(a))}</span></div><button class="btn alt" data-a="back">Back to assets</button></div>
+  <p>${esc(a.model)} · Serial ${esc(a.serial)} · ${esc(a.loc)} · Custodian: ${esc(a.cust)} · Warranty ends ${esc(a.war||'Not recorded')}</p><h3>Repair history</h3>${history.map(t=>`<div class="history-item"><b>${esc(t.ref)}</b> · ${esc(relativeTime(t.at))} · ${esc(t.status)}<div>${esc(t.desc)}</div></div>`).join('')||'<p class="mute">No faults recorded.</p>'}
+  <div class="row no-print" style="margin-top:12px"><button class="btn" data-a="reportAsset" data-v="${esc(a.id)}">Report a fault</button><button class="btn alt" data-a="print">Print QR label</button></div></div>`;
+ }
+ const editing=S.role==='Manager'||S.role==='Asset Officer';
+ return`${editing?assetForm():''}<p class="mute">Scan a device QR with a supported camera, or select a device to view its history. QR labels can be printed for asset tags.</p>
+ <div class="row no-print"><button class="btn alt" data-a="camera">Scan with camera</button><button class="btn alt" data-a="printAll">Print all QR labels</button><span id="cameraNote" class="mute"></span></div><video id="cameraVideo" class="hide" playsinline muted></video>
+ <div class="grid" style="margin-top:12px">${S.assets.map(a=>`<article class="card"><div class="row between"><b>${esc(a.id)}</b><span class="pill">${esc(assetStatus(a))}</span></div><div>${esc(a.type)} · ${esc(a.model)}</div><div class="mute">Serial ${esc(a.serial)} · ${esc(a.loc)} · ${esc(a.cust)} · Warranty ${esc(a.war||'not recorded')}</div><div class="qr" data-qr="${esc(a.id)}"></div>
+ ${editing?`<details><summary>Edit device</summary><div class="field-grid">${[['loc','Location'],['cust','Custodian'],['war','Warranty (YYYY-MM)'],['status','Status']].map(([n,l])=>`<label class="f">${l}${n==='status'?`<select data-asset-field="${n}" data-id="${esc(a.id)}">${['In use','In repair','Retired','Missing'].map(x=>`<option ${a[n]===x?'selected':''}>${x}</option>`).join('')}</select>`:`<input data-asset-field="${n}" data-id="${esc(a.id)}" value="${esc(a[n])}">`}</label>`).join('')}</div><button class="btn alt" data-a="saveAsset" data-id="${esc(a.id)}">Save device</button></details>`:''}
+ <div class="row no-print" style="margin-top:8px"><button class="btn alt" data-a="openAsset" data-v="${esc(a.id)}">View history</button><button class="btn alt" data-a="printOne" data-v="${esc(a.id)}">Print label</button></div></article>`).join('')||'<p class="empty">No devices registered.</p>'}</div>`;
+}
+function licenseView(){
+ const today=new Date(),start=new Date(today.getFullYear(),today.getMonth(),today.getDate()),limit=new Date(start);limit.setDate(start.getDate()+60);
+ return`<div class="grid"><form class="card" id="licenseForm"><b>Add a software license</b><label class="f">Software<input name="software" required></label><label class="f">Seats<input name="seats" type="number" min="1" required></label><label class="f">Expiry date<input name="expiry" type="date" required></label><button class="btn" type="submit" style="margin-top:10px">Add license</button></form>
+ <div class="card"><b>License register · expiring within 60 days is flagged</b>${S.licenses.map(l=>{const exp=new Date(l.expiry+'T00:00:00'),expired=exp<start,soon=!expired&&exp<=limit;return`<div class="history-item"><div class="row between"><b>${esc(l.software)}</b><span class="pill ${expired?'bad':soon?'warn':'ok'}">${expired?'Expired':soon?'Expiring soon':'Active'}</span></div><div class="mute">${esc(l.seats)} seats · expires ${esc(l.expiry)}</div></div>`}).join('')||'<p class="mute">No licenses recorded.</p>'}</div></div>`;
+}
+function dashboard(){
+ const rows=S.tickets,open=rows.filter(t=>!closed(t)),breached=rows.filter(t=>breach(t)),responses=rows.filter(t=>t.respAt),resolved=rows.filter(t=>t.doneAt);
+ const avg=(arr,get)=>arr.length?fmt(arr.reduce((s,t)=>s+minutes(get(t)),0)/arr.length):'none yet';
+ const bars=data=>{const max=Math.max(1,...data.map(x=>x[1]));return data.map(([name,count])=>`<div class="row between"><span>${esc(name)}</span><b>${count}</b></div><div class="bar"><i style="width:${Math.max(0,count/max*100)}%"></i></div>`).join('')};
+ const group=(key,filter=()=>true)=>{const m={};rows.filter(filter).forEach(t=>m[t[key]||'Unspecified']=(m[t[key]||'Unspecified']||0)+1);return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,6)};
+ const atRisk=open.filter(t=>{const x=sla(t);return x.rp>=.75||x.xp>=.75});
+ const work=Object.keys(TECHS).map(n=>[n,open.filter(t=>t.assignee===n).length]);
+ const pct=rows.length?Math.round(100*(rows.length-breached.length)/rows.length):100;
+ return`<div class="grid">${[['Open tickets',open.length],['At risk',atRisk.length],['Breached',breached.length],['SLA compliance',pct+'%'],['Average first response',avg(responses,t=>t.respAt-t.at)],['Average resolution',avg(resolved,t=>t.doneAt-t.at-(t.pausedMs||0))]].map(([k,v])=>`<div class="card"><div class="mute">${esc(k)}</div><div class="kpi">${esc(v)}</div></div>`).join('')}</div>
+ <div class="grid" style="margin-top:12px"><div class="card"><b>Tickets by status</b>${bars(STATUS.map(s=>[s,rows.filter(t=>t.status===s).length]))}</div><div class="card"><b>Tickets by priority</b>${bars(Object.keys(SLA).map(s=>[s,rows.filter(t=>t.priority===s).length]))}</div><div class="card"><b>Open work per technician</b>${bars(work)}</div><div class="card"><b>Repeat faults by device</b>${bars(group('asset',t=>!!t.asset))}</div><div class="card"><b>Repeat faults by room</b>${bars(group('loc'))}</div><div class="card"><b>Tickets by category</b>${bars(group('cat'))}</div></div>
+ <h2>Tickets at risk or breached</h2><div class="grid">${[...new Set([...atRisk,...breached])].map(ticketCard).join('')||'<p class="mute">No tickets currently at risk.</p>'}</div>`;
+}
+function messagesView(){
+ const messages=S.role==='Manager'?S.messages:S.messages.filter(m=>m.to===S.user);
+ return`<p class="mute">In-app demo notifications are recorded here; no WhatsApp/SMS provider is connected.</p><div class="card">${messages.map(m=>`<div class="history-item"><div class="row between"><span class="mute">${esc(relativeTime(m.at))} · to ${esc(m.to)}</span>${m.read?'':'<span class="pill">New</span>'}</div><div>${esc(m.text)}</div></div>`).join('')||'<p class="mute">No notifications yet.</p>'}<button class="btn alt no-print" data-a="readMessages">Mark all read</button></div>`;
+}
+function privacyView(){
+ return`<div class="card"><h2 style="margin-top:0">Privacy and demo access</h2><p>This is a classroom demo. Do not enter passwords, personal health information or other sensitive information. Ticket descriptions, names, photos and inventory are stored in this browser and are not uploaded to a server. Anyone with access to this browser profile may be able to view this demo data.</p><p>Role switching is for demonstration only. It is not authentication or a security boundary.</p><p class="mute">To clear demo data, use your browser's site data controls for this file. This also removes the locally saved tickets and attachments.</p></div>`;
+}
+function getTabs(){
+ const tabs=S.role==='Asset Officer'?['Assets']:['Tickets','Assets'];
+ if(S.role==='Manager')tabs.push('Dashboard');
+ tabs.push('Notifications');
+ if(S.role==='Manager')tabs.push('Licenses');
+ if(S.role==='Asset Officer')tabs.push('Licenses');
+ tabs.push('Privacy');
+ if(!tabs.includes(S.tab))S.tab='Tickets';
+ return tabs;
+}
+function render(){
+ const tabs=getTabs(),views={Tickets:ticketView,Assets:assetsView,Dashboard:dashboard,Messages:messagesView,Licenses:licenseView,Privacy:privacyView};
+ const users=USERS.filter(u=>S.role!=='Technician'||u.role==='Technician'||u.role==='Manager');
+ const view=(views[S.tab]||ticketView)();
+ document.getElementById('app').innerHTML=`<header><h1>DeskTrace</h1>
+ <label>Demo role<select data-c="role">${['Requester','Technician','Manager','Asset Officer'].map(x=>`<option ${S.role===x?'selected':''}>${x}</option>`).join('')}</select></label>
+ <label>Demo user<select data-c="user">${users.map(u=>`<option ${S.user===u.name?'selected':''}>${esc(u.name)}</option>`).join('')}</select></label>
+ ${S.role==='Technician'?`<label>Queue<select data-c="tech">${Object.keys(TECHS).map(n=>`<option ${S.tech===n?'selected':''}>${n}</option>`).join('')}</select></label>`:''}
+ <label><input type="checkbox" data-c="online" ${S.online?'checked':''}> Online</label><label><input type="checkbox" data-c="fast" ${S.fast?'checked':''}> Fast SLA clock</label>
+ <span class="pill sync">${S.online?'Up to date':`Offline · ${S.queue.length} pending`}</span></header>
+ <nav aria-label="Main navigation">${tabs.map(t=>`<button data-a="tab" data-v="${t}" class="${S.tab===t?'on':''}" ${S.tab===t?'aria-current="page"':''}>${t}</button>`).join('')}</nav>
+ <main>${S.storageErr?`<div class="notice error" role="alert">${esc(S.storageErr)}</div>`:''}${S.queue.length?`<div class="notice" role="status">${S.queue.length} change(s) saved locally and waiting to sync when you mark the demo online.</div>`:''}${S.err?`<div class="notice error" role="alert">${esc(S.err)}</div>`:''}${view}</main>`;
+ document.querySelectorAll('[data-qr]').forEach(el=>{
+  if(typeof QRCode==='undefined'){el.textContent='QR display needs an internet connection in this single-file demo.';return}
+  try{new QRCode(el,{text:location.href.split('#')[0]+'#asset='+encodeURIComponent(el.dataset.qr),width:96,height:96})}
+  catch(e){el.textContent='QR unavailable: '+e.message}
+ });
+}
+function syncQueue(){
+ if(!S.online)return;
+ S.queue.forEach(op=>{
+  const t=S.tickets.find(x=>x.id===op.ticketId);if(!t)return;
+  if(op.kind==='create'&&t.status==='New'&&!t.assignee)assign(t);
+  t.pending=false;
+ });
+ S.queue=[];persist();render();
+}
+function goOnline(){
+ S.online=true;persist();render();
+ setTimeout(()=>{if(navigator.onLine)syncQueue();else{S.online=false;persist();render()}},700);
+}
+function compressPhoto(file){
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onerror=()=>reject(new Error(`Could not read ${file.name}`));
+  reader.onload=()=>{const image=new Image();image.onerror=()=>reject(new Error(`Could not decode ${file.name}`));image.onload=()=>{
+   const scale=Math.min(1,900/Math.max(image.width,image.height)),canvas=document.createElement('canvas');
+   canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));
+   const ctx=canvas.getContext('2d');if(!ctx){reject(new Error('Photo compression is not supported by this browser.'));return}
+   ctx.drawImage(image,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',.68));
+  };image.src=reader.result};
+  reader.readAsDataURL(file);
+ });
+}
+async function handlePhotoSelection(input){
+ const files=Array.from(input.files||[]);
+ if(files.length>3){S.err='Choose no more than three photos.';render();return}
+ try{S.photoFiles=await Promise.all(files.map(compressPhoto));S.err='';render()}
+ catch(e){S.err='Photo attachment failed: '+e.message;render()}
+}
+function printLabels(ids){
+ const selected=S.assets.filter(a=>ids.includes(a.id));
+ if(!selected.length)return;
+ const labels=selected.map(a=>`<article><div><b>${esc(a.id)}</b> · ${esc(a.type)}</div><div>${esc(a.model)}</div><div id="label-${esc(a.id)}"></div><small>${esc(a.loc)} · Scan to view history</small></article>`).join('');
+ const w=window.open('','_blank','width=800,height=700');
+ if(!w){S.err='Allow pop-ups to print QR labels.';render();return}
+ w.document.write(`<!doctype html><html><head><title>DeskTrace QR Labels</title><style>body{font:14px Arial;margin:20px}.sheet{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}article{border:1px solid #777;padding:10px;text-align:center;break-inside:avoid}article div:nth-child(3){display:flex;justify-content:center;margin:8px}small{color:#444}@media print{body{margin:8mm}}</style></head><body><h1>DeskTrace asset labels</h1><div class="sheet">${labels}</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>window.onload=()=>{${selected.map(a=>`new QRCode(document.getElementById('label-${a.id}'),{text:${JSON.stringify(location.href.split('#')[0]+'#asset='+a.id)},width:110,height:110});`).join('')}setTimeout(()=>window.print(),500)}<\/script></body></html>`);
+ w.document.close();
+}
+async function scanWithCamera(){
+ const note=document.getElementById('cameraNote'),video=document.getElementById('cameraVideo');
+ if(!('BarcodeDetector'in window)||!navigator.mediaDevices?.getUserMedia){if(note)note.textContent='Live QR scanning is not supported here. Open a QR label link or select the device below.';return}
+ let stream;
+ try{
+  const detector=new BarcodeDetector({formats:['qr_code']});stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+  video.srcObject=stream;video.classList.remove('hide');await video.play();if(note)note.textContent='Point the camera at a DeskTrace QR label.';
+  const scan=async()=>{if(!video.isConnected||video.classList.contains('hide')){stream.getTracks().forEach(t=>t.stop());return}
+   try{const hits=await detector.detect(video);if(hits.length){const match=hits[0].rawValue.match(/(?:#asset=|desktrace:\/\/asset\/)([^&#/]+)/i);if(match){stream.getTracks().forEach(t=>t.stop());S.assetOpen=decodeURIComponent(match[1]);render();return}}}catch(e){if(note)note.textContent='Could not read QR code: '+e.message}
+   requestAnimationFrame(scan);
+  };requestAnimationFrame(scan);
+ }catch(e){if(stream)stream.getTracks().forEach(t=>t.stop());if(note)note.textContent='Camera access failed: '+e.message}
+}
+function handleSubmit(form){
+ const data=new FormData(form);
+ if(form.id==='ticketForm'){
+  const desc=String(data.get('desc')||'').trim();
+  if(!desc){S.err='Describe the fault before sending.';render();return}
+  S.err='';
+  const t=makeTicket({cat:String(data.get('cat')),loc:String(data.get('loc')),priority:String(data.get('priority')),asset:String(data.get('asset')||''),desc,photos:S.photoFiles.slice()});
+  S.form={cat:'Network',loc:'Lecture Hall 1',pri:'Medium',asset:'',desc:''};S.photoFiles=[];
+  if(t.pending)notify(`${t.ref} saved on this device and will be assigned after sync.`,t.by,t.id);
+  persist();render();
+ }else if(form.id==='assetForm'){
+  const v=Object.fromEntries(data.entries()),serial=String(v.serial).trim().toLowerCase();
+  if(S.assets.some(a=>a.serial.toLowerCase()===serial)){S.err='That serial number is already registered.';render();return}
+  const id='AST-'+String(Math.max(0,...S.assets.map(a=>Number(a.id.match(/\d+/)?.[0]||0)))+1).padStart(3,'0');
+  S.assets.push({id,type:String(v.type).trim(),model:String(v.model).trim(),serial:String(v.serial).trim(),loc:String(v.loc).trim(),cust:String(v.cust).trim(),war:String(v.war).trim(),status:'In use'});
+  S.err='';persist();render();
+ }else if(form.id==='licenseForm'){
+  const v=Object.fromEntries(data.entries());S.licenses.push({id:'LIC-'+String(S.licenses.length+1).padStart(3,'0'),software:String(v.software).trim(),seats:Number(v.seats),expiry:String(v.expiry)});persist();render();
+ }
+}
+document.addEventListener('submit',e=>{e.preventDefault();handleSubmit(e.target)});
+document.addEventListener('input',e=>{
+ if(e.target.matches('[data-filter="q"]')){S.filters.q=e.target.value;const list=document.getElementById('ticketList');if(list)list.innerHTML=permittedTickets().map(ticketCard).join('')||'<div class="empty">No tickets match these filters.</div>'}
+ if(e.target.form?.id==='ticketForm'&&e.target.name in S.form){S.form[e.target.name]=e.target.value}
+ if(e.target.form?.id==='ticketForm'&&e.target.name==='priority')S.form.pri=e.target.value;
+});
+document.addEventListener('change',async e=>{
+ const el=e.target;
+ if(el.form?.id==='ticketForm'&&el.name in S.form)S.form[el.name]=el.value;
+ if(el.form?.id==='ticketForm'&&el.name==='priority')S.form.pri=el.value;
+ if(el.form?.id==='ticketForm'&&el.name==='asset'){S.form.asset=el.value;render();return}
+ if(el.matches('[data-c]')){
+  const c=el.dataset.c;
+  if(c==='role'){
+   S.role=el.value;
+   const chosen=USERS.find(u=>u.role===S.role);if(chosen)S.user=chosen.name;
+   if(S.role==='Technician')S.tech=S.user==='Kofi'||S.user==='Ama'||S.user==='Yaw'?S.user:'Kofi';
+  }else if(c==='user'){S.user=el.value;if(TECHS[S.user])S.tech=S.user}
+  else if(c==='tech')S.tech=el.value;
+  else if(c==='fast')S.fast=el.checked;
+  else if(c==='online'){if(el.checked){goOnline();return}else S.online=false}
+  persist();render();return;
+ }
+  if(el.matches('[data-filter]')){S.filters[el.dataset.filter]=el.value;const list=document.getElementById('ticketList');if(list)list.innerHTML=permittedTickets().map(ticketCard).join('')||'<div class="empty">No tickets match these filters.</div>';return}
+  if(el.matches('[data-rating]')){const t=S.tickets.find(x=>x.id===el.dataset.rating);if(t)t.pendingRating=Number(el.value)||null;return}
+  if(el.matches('[data-c="reassign"]')){const t=S.tickets.find(x=>x.id===el.dataset.id);if(t){t.assignee=el.value||null;if(t.status==='New'&&el.value)t.status='Assigned';if(!el.value)t.status='New';addEvent(t,'Reassigned',el.value?`Reassigned to ${el.value}`:'Returned to manager queue');queueAction(t,'reassign');persist();render()}return}
+  if(el.matches('[data-c="priority"]')){const t=S.tickets.find(x=>x.id===el.dataset.id);if(t){t.priority=el.value;addEvent(t,'Priority',`Priority changed to ${el.value}`);queueAction(t,'priority');persist();render()}return}
+  if(el.matches('[data-asset-field]'))return;
+  if(el.name==='photos'){await handlePhotoSelection(el);return}
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-a]');if(!b)return;
+ const t=S.tickets.find(x=>x.id===b.dataset.id),a=b.dataset.a;
+ if(a==='tab')S.tab=b.dataset.v;
+ else if(a==='status')return setStatus(t,b.dataset.v);
+ else if(a==='comment'){
+  const box=document.querySelector(`[data-comment="${CSS.escape(b.dataset.id)}"]`),note=box?.value.trim();
+  if(!note){S.err='Enter a comment or work note first.';render();return}
+  addEvent(t,'Comment',note);queueAction(t,'comment');notify(`New update on ${t.ref}.`,S.role==='Requester'?(t.assignee||'Manager'):t.by,t.id);S.err='';persist();render();
+ }else if(a==='rate'){if(t&&t.pendingRating){t.rating=t.pendingRating;delete t.pendingRating;addEvent(t,'Rating',`Requester rated service ${t.rating}/5`);persist()}}
+ else if(a==='openAsset')S.assetOpen=b.dataset.v;
+ else if(a==='back')S.assetOpen=null;
+ else if(a==='reportAsset'){
+  const x=S.assets.find(y=>y.id===b.dataset.v);S.role='Requester';S.user=ME;S.tab='Tickets';S.assetOpen=null;
+  S.form={...S.form,asset:x.id,loc:x.loc,cat:{Projector:'Projector',Printer:'Printer',Router:'Network'}[x.type]||'Software'};
+ }
+ else if(a==='saveAsset'){
+  const x=S.assets.find(y=>y.id===b.dataset.id);if(x){document.querySelectorAll(`[data-asset-field][data-id="${CSS.escape(x.id)}"]`).forEach(el=>x[el.dataset.assetField]=el.value.trim());persist();S.err='Device details saved.'}
+ }else if(a==='printOne')printLabels([b.dataset.v]);
+ else if(a==='printAll'||a==='print')printLabels(a==='printAll'?S.assets.map(x=>x.id):S.assetOpen?[S.assetOpen]:S.assets.map(x=>x.id));
+ else if(a==='camera')scanWithCamera();
+ else if(a==='readMessages'){S.messages.filter(m=>S.role==='Manager'||m.to===S.user).forEach(m=>m.read=true);persist()}
+ render();
+});
+window.addEventListener('online',()=>{S.online=true;syncQueue()});
+window.addEventListener('offline',()=>{S.online=false;persist();render()});
+setInterval(()=>{
+ document.querySelectorAll('[data-sla]').forEach(el=>{const t=S.tickets.find(x=>x.id===el.dataset.sla);if(t)el.innerHTML=slaMarkup(t)});
+ const check=now();if(check-S.lastBreachCheck>5000){S.lastBreachCheck=check;let changed=false;
+  S.tickets.filter(t=>!closed(t)&&!t.pending).forEach(t=>{const x=sla(t);t.breaches=t.breaches||[];
+   if(!t.respAt&&x.re>x.rt&&!t.responseBreachLogged){t.responseBreachLogged=true;addEvent(t,'SLA breach','First response target missed');notify(`${t.ref} has breached its response SLA.`,'Manager',t.id);changed=true}
+   if(x.xe>x.xt&& !t.breaches.includes('resolution')){t.breaches.push('resolution');addEvent(t,'SLA breach','Resolution target missed');notify(`${t.ref} has breached its resolution SLA.`,'Manager',t.id);changed=true}
+  });if(changed){persist();if(S.tab==='Messages'||S.tab==='Dashboard')render()}
+ }
+},1000);
+load();
+const hash=location.hash.match(/(?:^|[#&])asset=([^&]+)/);if(hash){try{S.assetOpen=decodeURIComponent(hash[1]);S.tab='Assets'}catch(e){S.err='The asset link is invalid.'}}
+render();
+</script>
+</body>
+</html>
